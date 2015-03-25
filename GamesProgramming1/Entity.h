@@ -8,6 +8,8 @@ private:
 	GLuint TextureID;
 	vec2 Velocity;
 	float Torque;
+	bool ClampVelocity;
+	bool ClampTorque;
 
 	//Methods
 	float Clamp(float c, float min, float max);

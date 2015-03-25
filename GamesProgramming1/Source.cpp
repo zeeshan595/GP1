@@ -8,6 +8,7 @@
 #include "Common.h"
 
 list<Entity*> entities;
+Input *input;
 
 void Reshape(int w, int h)
 {
@@ -62,8 +63,10 @@ void Update(int i)
 	glutPostRedisplay(); //request display() call ASAPwww
 }
 
-void Keyboard(unsigned char k, int x, int y)
+void KeyboardUp(unsigned char k, int x, int y)
 {
+	input->SetButtonState((KEYS)((int)k), false);
+	/*
 	switch (k)
 	{
 	case 'w':
@@ -79,12 +82,19 @@ void Keyboard(unsigned char k, int x, int y)
 		(*entities.begin())->AddTorque(1);
 		break;
 	}
+	*/
+}
+
+void KeyboardDown(unsigned char k, int x, int y)
+{
+	input->SetButtonState((KEYS)((int)k), true);
 }
 
 void TestingMethod()
 {
 	cTexture* tex = new cTexture("Images/Ship1.png");
 	Entity* e = new Entity();
+	//e->input = input;
 	e->Position = vec2(50, 50);
 	e->Scale = vec2(50, 50);
 	e->SetTexture(tex->getTexture());
@@ -103,12 +113,15 @@ int main(int argc, char **argv)
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("My Awesome Game");
 	
+	input = new Input();
+
 	TestingMethod();
 
 	glutReshapeFunc(Reshape);
 	glutDisplayFunc(Render);
 	glutTimerFunc( 10 , Update, 0);
-	glutKeyboardFunc(Keyboard);
+	glutKeyboardUpFunc(KeyboardUp);
+	glutKeyboardFunc(KeyboardDown);
 
 	//Very important! This initializes the entry point in the OpenGL driver so we can 
 	//call the functions in the api

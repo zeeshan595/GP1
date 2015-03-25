@@ -23,6 +23,8 @@
 #include <algorithm>
 
 #include "cTexture.h"
+#include "KEYS.h"
+#include "Input.h"
 #include "Entity.h"
 
 using namespace std;

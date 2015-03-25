@@ -1,19 +1,18 @@
 #include "Entity.h"
 
 //Constructor
-Entity::Entity(void)
+Entity::Entity()
 {
 	Position = vec2(0, 0);
 	Rotation = 0;
 	Scale = vec2(1, 1);
-
 	Velocity = vec2(0, 0);
 	Torque = 0;
-
+	Rigidbody = false;
 }
 
 //Deconstructor
-Entity::~Entity(void)
+Entity::~Entity()
 {
 
 }
@@ -25,20 +24,31 @@ void Entity::Update()
 		Position += Velocity;
 		Rotation += Torque;
 	}
+	
+	//if (input->GetButton(W))
+	//{
+	//	AddForce(vec2(sin(Rotation * 3.14 / 180), -cos(Rotation* 3.14 / 180)));
+	//}
 }
 
 void Entity::AddForce(vec2 Force)
 {
 	Velocity += Force;
 	
-	Velocity.x = Clamp(Velocity.x, -10, 10);
-	Velocity.y = Clamp(Velocity.y, -10, 10);
+	if (ClampVelocity)
+	{
+		Velocity.x = Clamp(Velocity.x, -1, 1);
+		Velocity.y = Clamp(Velocity.y, -1, 1);
+	}
 }
 
 void Entity::AddTorque(float Torque)
 {
 	Entity::Torque += Torque;
-	Entity::Torque = Clamp(Entity::Torque, -10, 10);
+	if (ClampVelocity)
+	{
+		Entity::Torque = Clamp(Entity::Torque, -5, 5);
+	}
 }
 
 float Entity::GetTorque()
