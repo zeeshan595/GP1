@@ -65,6 +65,7 @@
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Player1.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +82,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="KEYS.h" />
+    <ClInclude Include="Player1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

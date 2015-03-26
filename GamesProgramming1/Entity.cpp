@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 //Constructor
-Entity::Entity()
+Entity::Entity(Input* input)
 {
 	Position = vec2(0, 0);
 	Rotation = 0;
@@ -9,6 +9,7 @@ Entity::Entity()
 	Velocity = vec2(0, 0);
 	Torque = 0;
 	Rigidbody = false;
+	Entity::input = input;
 }
 
 //Deconstructor
@@ -17,24 +18,19 @@ Entity::~Entity()
 
 }
 
-void Entity::Update()
+void Entity::FixedUpdate()
 {
 	if (Rigidbody)
 	{
 		Position += Velocity;
 		Rotation += Torque;
 	}
-	
-	//if (input->GetButton(W))
-	//{
-	//	AddForce(vec2(sin(Rotation * 3.14 / 180), -cos(Rotation* 3.14 / 180)));
-	//}
 }
 
 void Entity::AddForce(vec2 Force)
 {
 	Velocity += Force;
-	
+	cout << Velocity.x << "," << Velocity.y << endl;
 	if (ClampVelocity)
 	{
 		Velocity.x = Clamp(Velocity.x, -1, 1);
@@ -110,6 +106,13 @@ void Entity::Render()
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
+
+	Update();
+}
+
+void Entity::Update()
+{
+
 }
 
 void Entity::SetTexture(GLuint TextureID)  // set the image of the sprite

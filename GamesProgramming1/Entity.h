@@ -1,6 +1,8 @@
 #pragma once
 #include "Common.h"
 
+class Input;
+
 class Entity
 {
 private:
@@ -10,10 +12,12 @@ private:
 	float Torque;
 	bool ClampVelocity;
 	bool ClampTorque;
-	//Input * test;
 
 	//Methods
 	float Clamp(float c, float min, float max);
+
+protected:
+	Input* input;
 
 public:
 	//Variables
@@ -24,7 +28,7 @@ public:
 	vec2 Offset;
 
 	//Methods
-	void Update();
+	void FixedUpdate();
 	void Render();
 	void AddForce(vec2 force);
 	void AddTorque(float torque);
@@ -32,6 +36,9 @@ public:
 	float GetTorque();
 	void SetTexture(GLuint TextureID);
 
-	Entity();
+	//Virtual Methods
+	virtual void Update();
+
+	Entity(Input* input);
 	~Entity();
 };

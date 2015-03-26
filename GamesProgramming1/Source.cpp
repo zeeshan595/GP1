@@ -56,16 +56,17 @@ void Update(int i)
 {
 	for (Entity* e : entities)
 	{
-		e->Update();
+		e->FixedUpdate();
 	}
 	// Reset timer
 	glutTimerFunc( 10, Update, 0);
-	glutPostRedisplay(); //request display() call ASAPwww
+	//Update the display
+	glutPostRedisplay();
 }
 
 void KeyboardUp(unsigned char k, int x, int y)
 {
-	input->SetButtonState((KEYS)((int)k), false);
+	input->SetButtonState((KEYS)((int)toupper(k)), false);
 	/*
 	switch (k)
 	{
@@ -87,18 +88,19 @@ void KeyboardUp(unsigned char k, int x, int y)
 
 void KeyboardDown(unsigned char k, int x, int y)
 {
-	input->SetButtonState((KEYS)((int)k), true);
+	input->SetButtonState((KEYS)((int)toupper(k)), true);
 }
 
 void TestingMethod()
 {
 	cTexture* tex = new cTexture("Images/Ship1.png");
-	Entity* e = new Entity();
-	//e->input = input;
+	Player1* e = new Player1(input);
 	e->Position = vec2(50, 50);
+	e->Rotation = 135;
 	e->Scale = vec2(50, 50);
 	e->SetTexture(tex->getTexture());
-	entities.push_back(e);
+	e->Rigidbody = true;
+	//entities.push_back(e);
 }
 
 int main(int argc, char **argv)

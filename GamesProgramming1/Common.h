@@ -1,3 +1,8 @@
+#include "cTexture.h"
+#include "KEYS.h"
+#include "Input.h"
+#include "Entity.h"
+#include "Player1.h"
 
 // Windows & OpenGL 
 #include <stdlib.h>
@@ -5,6 +10,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <stdio.h>
+#include <ctype.h>
 #include <cstdlib>
 #include <list>
 #include "GL\glew.h"
@@ -21,11 +28,6 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-
-#include "cTexture.h"
-#include "KEYS.h"
-#include "Input.h"
-#include "Entity.h"
 
 using namespace std;
 using namespace glm;
