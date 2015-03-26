@@ -10,6 +10,7 @@ private:
 	float Torque;
 	bool ClampVelocity;
 	bool ClampTorque;
+	//Input * test;
 
 	//Methods
 	float Clamp(float c, float min, float max);

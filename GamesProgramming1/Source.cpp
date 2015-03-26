@@ -8,7 +8,7 @@
 #include "Common.h"
 
 list<Entity*> entities;
-Input *input;
+Input* input;
 
 void Reshape(int w, int h)
 {
