@@ -1,11 +1,11 @@
 /*
 =================
-cTexture.cpp
+Texture.cpp
 - CPP file for class definition - IMPLEMENTATION
 - CPP file for the cD3DXTextureMgr class
 =================
 */
-#include "cTexture.h"
+#include "Texture.h"
 
 /*
 =================
@@ -13,14 +13,31 @@ cTexture.cpp
 - Is always called, thus ensures all cD3DXTextureMgr objects are in a consistent state.
 =================
 */
-cTexture::cTexture()
+Texture::Texture()
 {
-	cTexture::GLTextureID = NULL;
+	Texture::GLTextureID = NULL;
+	textCords[0] = vec2(0, 0);
+	textCords[1] = vec2(1, 0);
+	textCords[2] = vec2(1, 1);
+	textCords[3] = vec2(0, 1);
 }
 
-cTexture::cTexture(LPCSTR theFilename)
+Texture::Texture(LPCSTR theFilename)
 {
-	cTexture::createTexture(theFilename);
+	Texture::createTexture(theFilename);
+	textCords[0] = vec2(0, 0);
+	textCords[1] = vec2(1, 0);
+	textCords[2] = vec2(1, 1);
+	textCords[3] = vec2(0, 1);
+}
+
+void Texture::Update()
+{
+	if (Enabled)
+	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_2D, GLTextureID);
+	}
 }
 
 /*
@@ -28,7 +45,7 @@ cTexture::cTexture(LPCSTR theFilename)
 - Destructor.
 =================
 */
-cTexture::~cTexture()
+Texture::~Texture()
 {
 	ilDeleteImages(1, &ilTextureID);
 }
@@ -38,7 +55,7 @@ cTexture::~cTexture()
 - create the texture for use.
 =================
 */
-bool cTexture::createTexture(LPCSTR theFilename) 	// create the texture for use.
+bool Texture::createTexture(LPCSTR theFilename) 	// create the texture for use.
 {
 
 	ILboolean success = false;
@@ -86,9 +103,9 @@ bool cTexture::createTexture(LPCSTR theFilename) 	// create the texture for use.
 - return the texture.
 =================
 */
-GLuint cTexture::getTexture()        // return the texture.
+GLuint Texture::getTexture()        // return the texture.
 {
-	return cTexture::GLTextureID;
+	return Texture::GLTextureID;
 }
 
 /*
@@ -96,7 +113,7 @@ GLuint cTexture::getTexture()        // return the texture.
 - Return width of texture.
 =================
 */
-GLsizei cTexture::getTWidth() 						// Return width of texture;
+GLsizei Texture::getTWidth() 						// Return width of texture;
 {
 	return textureWidth;
 }
@@ -105,7 +122,7 @@ GLsizei cTexture::getTWidth() 						// Return width of texture;
 - Return height of texture.
 =================
 */
-GLsizei cTexture::getTHeight() 						// Return height of texture;
+GLsizei Texture::getTHeight() 						// Return height of texture;
 {
 	return textureHeight;
 }

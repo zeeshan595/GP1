@@ -21,15 +21,47 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cTexture.cpp">
+    <ClCompile Include="Player1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player1.cpp">
+    <ClCompile Include="Module.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KEYS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libraries\DevIL.lib">
@@ -38,37 +70,17 @@
     <Library Include="Libraries\freeglut.lib">
       <Filter>Resource Files</Filter>
     </Library>
-    <Library Include="Libraries\ILU.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="Libraries\ILUT.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
     <Library Include="Libraries\glew32.lib">
       <Filter>Resource Files</Filter>
     </Library>
     <Library Include="Libraries\glew32s.lib">
       <Filter>Resource Files</Filter>
     </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KEYS.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Library Include="Libraries\ILU.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="Libraries\ILUT.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

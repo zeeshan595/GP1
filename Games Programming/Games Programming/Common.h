@@ -1,15 +1,10 @@
-#include "cTexture.h"
-#include "KEYS.h"
-#include "Input.h"
-#include "Entity.h"
-#include "Player1.h"
-
 // Windows & OpenGL 
 #include <stdlib.h>
 #include <Windows.h>
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <typeinfo>
 #include <stdio.h>
 #include <ctype.h>
 #include <cstdlib>

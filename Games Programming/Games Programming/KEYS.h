@@ -34,8 +34,8 @@ enum KEYS
 	RightShift = 113,
 	LeftAlt = 116,
 	RightAlt = 117,
-	ArrowUp = 101,
-	ArrowDown = 103,
-	ArrowRight = 102,
-	ArrowLeft = 100
+	ArrowUp = 56,
+	ArrowDown = 50,
+	ArrowRight = 54,
+	ArrowLeft = 52
 };

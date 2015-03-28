@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D23F9779-83BB-4BC5-86F6-5CCA0B983B42}</ProjectGuid>
-    <RootNamespace>GamesProgramming1</RootNamespace>
+    <ProjectGuid>{F81B4042-BB56-4B8C-845B-8ED8F7F1A95F}</ProjectGuid>
+    <RootNamespace>GamesProgramming</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -62,11 +62,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cTexture.cpp" />
+    <ClCompile Include="Player2.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="Player1.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Player2.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="KEYS.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="Player1.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libraries\DevIL.lib" />
@@ -75,14 +87,6 @@
     <Library Include="Libraries\glew32s.lib" />
     <Library Include="Libraries\ILU.lib" />
     <Library Include="Libraries\ILUT.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="cTexture.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="KEYS.h" />
-    <ClInclude Include="Player1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

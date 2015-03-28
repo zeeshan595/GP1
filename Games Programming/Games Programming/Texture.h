@@ -1,7 +1,8 @@
 #pragma once
 #include "Common.h"
+#include "Module.h"
 
-class cTexture
+class Texture: public Module
 {
 private:
 	GLuint GLTextureID;
@@ -12,9 +13,13 @@ private:
 	ILubyte *txData;
 
 public:
-	cTexture();
-	cTexture(LPCSTR theFilename);
-	~cTexture();
+	vec2 textCords[4];
+
+	Texture();
+	Texture(LPCSTR theFilename);
+	~Texture();
+
+	void Update();
 	bool createTexture(LPCSTR theFilename);		// create the texture for use.
 	GLuint getTexture();						// return the texture.
 	GLsizei getTWidth();						// Return width of texture;

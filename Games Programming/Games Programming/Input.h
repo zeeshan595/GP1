@@ -1,5 +1,6 @@
 #pragma once
 #include "Common.h"
+#include "KEYS.h"
 
 class Input
 {
@@ -7,8 +8,8 @@ private:
 	map<KEYS, bool> keysPressed;
 
 public:
-	void SetButtonState(KEYS k, bool b);
-	bool GetButton(KEYS key);
+	bool GetKey(KEYS k);
+	void SetKey(KEYS k, bool b);
 
 	Input();
 	~Input();
