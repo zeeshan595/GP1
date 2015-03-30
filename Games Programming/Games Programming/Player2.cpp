@@ -15,20 +15,20 @@ Player2::~Player2()
 
 void Player2::Update()
 {
-	if (Entity::input->GetKey(KEYS::ArrowUp))
+	if (Entity::input->GetKey(KEYS::I))
 	{
 		Entity::AddForce(vec2(sin(Rotation * 3.14 / 180) * Speed, -cos(Rotation* 3.14 / 180) * Speed));
 	}
-	else if (Entity::input->GetKey(KEYS::ArrowDown))
+	else if (Entity::input->GetKey(KEYS::K))
 	{
 		Entity::AddForce(vec2(-sin(Rotation * 3.14 / 180) * Speed, cos(Rotation* 3.14 / 180) * Speed));
 	}
 
-	if (input->GetKey(KEYS::ArrowLeft))
+	if (input->GetKey(KEYS::J))
 	{
 		Entity::Rotation += -RotationSpeed;
 	}
-	else if (Entity::input->GetKey(KEYS::ArrowRight))
+	else if (Entity::input->GetKey(KEYS::L))
 	{
 		Entity::Rotation += RotationSpeed;
 	}

@@ -5,7 +5,7 @@
 class Input
 {
 private:
-	map<KEYS, bool> keysPressed;
+	map<KEYS , bool> keysPressed;
 
 public:
 	bool GetKey(KEYS k);

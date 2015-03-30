@@ -7,6 +7,8 @@
 //Public Varibles
 vector<Entity*> entities;
 Input* input;
+int WINDOW_WIDTH = 1600;
+int WINDOW_HEIGHT = 1200;
 
 //Open GL Methods
 void Reshape(int w, int h);
@@ -27,7 +29,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
 
 	//Setup Glut Window
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutCreateWindow("2D Fight");
 
 	//Create Game
@@ -40,8 +42,9 @@ int main(int argc, char **argv)
 	p1->Rotation = 135;
 	entities.push_back(p1);
 
+	Texture* t2 = new Texture("Images/Ship2.png");
 	Player2* p2 = new Player2(input);
-	p2->AddModule(t1);
+	p2->AddModule(t2);
 	p2->Scale = vec2(100, 100);
 	p2->Position = vec2(750, 550);
 	p2->Mass = 50;
@@ -71,6 +74,9 @@ int main(int argc, char **argv)
 
 void Reshape(int w, int h)
 {
+	WINDOW_WIDTH = w;
+	WINDOW_HEIGHT = h;
+
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -86,6 +92,9 @@ void Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	//Camera Follow
+	glTranslatef(((-entities[0]->Position.x - entities[1]->Position.x) / 2) + (WINDOW_WIDTH / 2), ((-entities[0]->Position.y - entities[1]->Position.y) / 2) + (WINDOW_HEIGHT / 2), 0);
 
 	//for (list<Entity>::iterator iter=entities.begin();iter!=entities.end();++iter)
 	for (Entity* e : entities)
@@ -116,6 +125,5 @@ void KeyboardUp(unsigned char k, int x, int y)
 
 void KeyboardDown(unsigned char k, int x, int y)
 {
-	cout << (int)k;
 	input->SetKey((KEYS)((int)toupper(k)), true);
 }
