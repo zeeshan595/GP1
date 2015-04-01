@@ -15,8 +15,8 @@ private:
 public:
 	vec2 textCords[4];
 
-	Texture();
-	Texture(LPCSTR theFilename);
+	Texture(Entity* e);
+	Texture(LPCSTR theFilename, Entity* e);
 	~Texture();
 
 	void Update();

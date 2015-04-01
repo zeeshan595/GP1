@@ -3,6 +3,8 @@
 #include "Entity.h"
 #include "Player1.h"
 #include "Player2.h"
+#include "Thruster.h"
+#include "CircleCollider.h"
 
 //Public Varibles
 vector<Entity*> entities;
@@ -16,6 +18,8 @@ void Render();
 void Update(int i);
 void KeyboardUp(unsigned char k, int x, int y);
 void KeyboardDown(unsigned char k, int x, int y);
+void SetupPlayers();
+void SetupLevel();
 
 int main(int argc, char **argv)
 {
@@ -33,23 +37,8 @@ int main(int argc, char **argv)
 	glutCreateWindow("2D Fight");
 
 	//Create Game
-	Texture* t1 = new Texture("Images/Ship1.png");
-	Player1* p1 = new Player1(input);
-	p1->AddModule(t1);
-	p1->Scale = vec2(100, 100);
-	p1->Position = vec2(50, 50);
-	p1->Mass = 50;
-	p1->Rotation = 135;
-	entities.push_back(p1);
-
-	Texture* t2 = new Texture("Images/Ship2.png");
-	Player2* p2 = new Player2(input);
-	p2->AddModule(t2);
-	p2->Scale = vec2(100, 100);
-	p2->Position = vec2(750, 550);
-	p2->Mass = 50;
-	p2->Rotation = -45;
-	entities.push_back(p2);
+	SetupPlayers();
+	SetupLevel();
 
 	//Setup OpenGL Methods
 	glutReshapeFunc(Reshape);
@@ -70,6 +59,54 @@ int main(int argc, char **argv)
 	//Start up a loop that runs in the background
 	glutMainLoop();
 	return 0;
+}
+
+void SetupLevel()
+{
+
+}
+
+void SetupPlayers()
+{
+	Texture* t1_T = new Texture("Images/Ship1_Thruster.png");
+	Thruster* p1_T = new Thruster(input);
+	p1_T->AddModule(t1_T);
+	p1_T->Scale = vec2(100, 46);
+	p1_T->PivotOffset = vec2(0, 65);
+	entities.push_back(p1_T);
+
+	CircleCollider* c1 = new CircleCollider(&entities);
+	Texture* t1 = new Texture("Images/Ship1.png");
+	Player1* p1 = new Player1(input);
+	p1->AddModule(t1);
+	p1->AddModule(c1);
+	p1->Scale = vec2(100, 100);
+	p1->Position = vec2(50, 50);
+	p1->Mass = 50;
+	p1->Rotation = 135;
+	entities.push_back(p1);
+
+	p1->SetChild(p1_T);
+
+	Texture* t2_T = new Texture("Images/Ship2_Thruster.png");
+	Thruster* p2_T = new Thruster(input);
+	p2_T->AddModule(t2_T);
+	p2_T->Scale = vec2(100, 46);
+	p2_T->PivotOffset = vec2(0, 60);
+	entities.push_back(p2_T);
+
+	CircleCollider* c2 = new CircleCollider(&entities);
+	Texture* t2 = new Texture("Images/Ship2.png");
+	Player2* p2 = new Player2(input);
+	p2->AddModule(t2);
+	p2->AddModule(c2);
+	p2->Scale = vec2(100, 100);
+	p2->Position = vec2(750, 550);
+	p2->Mass = 50;
+	p2->Rotation = -45;
+	entities.push_back(p2);
+
+	p2->SetChild(p2_T);
 }
 
 void Reshape(int w, int h)
@@ -94,7 +131,7 @@ void Render()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	//Camera Follow
-	glTranslatef(((-entities[0]->Position.x - entities[1]->Position.x) / 2) + (WINDOW_WIDTH / 2), ((-entities[0]->Position.y - entities[1]->Position.y) / 2) + (WINDOW_HEIGHT / 2), 0);
+	glTranslatef(((-entities[1]->Position.x - entities[3]->Position.x) / 2) + (WINDOW_WIDTH / 2), ((-entities[1]->Position.y - entities[3]->Position.y) / 2) + (WINDOW_HEIGHT / 2), 0);
 
 	//for (list<Entity>::iterator iter=entities.begin();iter!=entities.end();++iter)
 	for (Entity* e : entities)

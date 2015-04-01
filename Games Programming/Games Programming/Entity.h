@@ -9,6 +9,9 @@ class Entity
 protected:
 	Input* input;
 	vector<Module*> modules;
+	vec2 childOffset;
+	float childRotation;
+	Entity* child;
 
 public:
 	//Varibles
@@ -28,6 +31,9 @@ public:
 	void Render();
 	void FixedUpdate();
 	void AddModule(Module* m);
+	Module* GetModule(const type_info &i);
+	void SetChild(Entity* e);
+	Entity* GetChild();
 
 	//Virtual
 	virtual void Update();

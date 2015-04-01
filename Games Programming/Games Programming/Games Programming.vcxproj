@@ -62,6 +62,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="Player2.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -69,8 +70,10 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Player1.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Thruster.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Player2.h" />
     <ClInclude Include="Texture.h" />
@@ -79,6 +82,7 @@
     <ClInclude Include="KEYS.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Player1.h" />
+    <ClInclude Include="Thruster.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libraries\DevIL.lib" />

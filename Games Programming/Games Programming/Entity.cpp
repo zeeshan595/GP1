@@ -12,6 +12,9 @@ Entity::Entity(Input* input)
 	Velocity = vec2(0, 0);
 	Torque = 0;
 	Mass = 1;
+	childOffset = vec2(0, 0);
+	childRotation = 0;
+	child = NULL;
 }
 
 
@@ -42,8 +45,8 @@ void Entity::Render()
 		}
 	}
 
-	glTranslatef(Position.x, Position.y, 0);
-	glRotatef(Rotation, 0, 0, 1);
+	glTranslatef(Position.x + childOffset.x, Position.y + childOffset.y, 0);
+	glRotatef(Rotation + childRotation, 0, 0, 1);
 	glTranslatef((-Scale.x / 2) + PivotOffset.x, (-Scale.y / 2) + PivotOffset.y, 0);
 	glScalef(Scale.x, Scale.y, 0);
 
@@ -80,6 +83,12 @@ void Entity::FixedUpdate()
 		Position += Velocity;
 		Rotation += Torque;
 	}
+
+	if (child != NULL)
+	{
+		child->childOffset = Position;
+		child->childRotation = Rotation;
+	}
 }
 
 void Entity::AddForce(vec2 f)
@@ -95,4 +104,27 @@ void Entity::AddTorque(float t)
 void Entity::AddModule(Module* m)
 {
 	modules.push_back(m);
+}
+
+Module* Entity::GetModule(const type_info &i)
+{
+	for (Module* m : modules)
+	{
+		if (typeid(&m) == i)
+		{
+			return m;
+		}
+	}
+
+	return NULL;
+}
+
+void Entity::SetChild(Entity* e)
+{
+	child = e;
+}
+
+Entity* Entity::GetChild()
+{
+	return child;
 }

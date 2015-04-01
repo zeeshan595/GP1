@@ -1,8 +1,9 @@
 #include "Module.h"
 
 
-Module::Module()
+Module::Module(Entity* e)
 {
+	entity = e;
 	Enabled = true;
 }
 

@@ -36,6 +36,12 @@
     <ClCompile Include="Player2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Thruster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Thruster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
