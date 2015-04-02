@@ -1,8 +1,10 @@
-#pragma once
+#ifndef ENTITY_H
+#define ENTITY_H
+
 #include "Common.h"
 #include "Input.h"
-#include "Module.h"
-#include "Texture.h"
+
+class Module;
 
 class Entity
 {
@@ -19,6 +21,7 @@ public:
 	float Rotation;
 	vec2 Scale;
 	bool IsStatic;
+	vec2 textCords[4];
 
 	vec2 PivotOffset;
 
@@ -45,3 +48,27 @@ public:
 	Entity(Input* input);
 	~Entity();
 };
+
+class Module
+{
+public:
+	Entity* entity;
+
+	bool Enabled;
+
+	virtual void Update()
+	{
+
+	}
+
+	Module()
+	{
+		Enabled = true;
+	}
+	~Module()
+	{
+
+	}
+};
+
+#endif

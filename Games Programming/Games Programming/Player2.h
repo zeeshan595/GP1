@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PLAYER2_H
+#define PLAYER2_H
+
 #include "Input.h"
 #include "Entity.h"
 
@@ -13,3 +15,5 @@ public:
 	Player2(Input* input);
 	~Player2();
 };
+
+#endif

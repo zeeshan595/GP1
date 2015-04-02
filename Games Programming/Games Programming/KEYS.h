@@ -1,4 +1,5 @@
-#pragma once
+#ifndef KEYS_H
+#define KEYS_H
 
 enum KEYS 
 {
@@ -39,3 +40,5 @@ enum KEYS
 	ArrowRight = 54,
 	ArrowLeft = 52
 };
+
+#endif

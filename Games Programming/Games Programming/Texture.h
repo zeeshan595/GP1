@@ -1,6 +1,8 @@
-#pragma once
+#ifndef TEXTURE_H
+#define TEXTURE_H
+
 #include "Common.h"
-#include "Module.h"
+#include "Entity.h"
 
 class Texture: public Module
 {
@@ -15,8 +17,8 @@ private:
 public:
 	vec2 textCords[4];
 
-	Texture(Entity* e);
-	Texture(LPCSTR theFilename, Entity* e);
+	Texture();
+	Texture(LPCSTR theFilename);
 	~Texture();
 
 	void Update();
@@ -25,3 +27,5 @@ public:
 	GLsizei getTWidth();						// Return width of texture;
 	GLsizei getTHeight();						// Return height of texture;
 };
+
+#endif

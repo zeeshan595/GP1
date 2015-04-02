@@ -1,4 +1,6 @@
-#pragma once
+#ifndef THRUSTER_H
+#define THRUSTER_H
+
 #include "Entity.h"
 #include "Input.h"
 
@@ -13,3 +15,5 @@ public:
 	Thruster(Input* input);
 	~Thruster();
 };
+
+#endif

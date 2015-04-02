@@ -13,9 +13,8 @@ Texture.cpp
 - Is always called, thus ensures all cD3DXTextureMgr objects are in a consistent state.
 =================
 */
-Texture::Texture(Entity* e): Module(e)
+Texture::Texture()
 {
-	entity = e;
 	Texture::GLTextureID = NULL;
 	textCords[0] = vec2(0, 0);
 	textCords[1] = vec2(1, 0);
@@ -23,9 +22,8 @@ Texture::Texture(Entity* e): Module(e)
 	textCords[3] = vec2(0, 1);
 }
 
-Texture::Texture(LPCSTR theFilename, Entity* e): Module(e)
+Texture::Texture(LPCSTR theFilename)
 {
-	entity = e;
 	Texture::createTexture(theFilename);
 	textCords[0] = vec2(0, 0);
 	textCords[1] = vec2(1, 0);
@@ -39,6 +37,11 @@ void Texture::Update()
 	{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBindTexture(GL_TEXTURE_2D, GLTextureID);
+
+		entity->textCords[0] = textCords[0];
+		entity->textCords[1] = textCords[1];
+		entity->textCords[2] = textCords[2];
+		entity->textCords[3] = textCords[3];
 	}
 }
 

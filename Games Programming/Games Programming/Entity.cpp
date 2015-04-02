@@ -15,6 +15,11 @@ Entity::Entity(Input* input)
 	childOffset = vec2(0, 0);
 	childRotation = 0;
 	child = NULL;
+
+	textCords[0] = vec2(0, 0);
+	textCords[1] = vec2(1, 0);
+	textCords[2] = vec2(1, 1);
+	textCords[3] = vec2(0, 1);
 }
 
 
@@ -28,21 +33,10 @@ void Entity::Render()
 	glPushMatrix();
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
-	
-	vec2 textCords[4] = { vec2(0, 0), vec2(1, 0), vec2(1, 1), vec2(0, 1) };
 
 	for (Module* m : modules)
 	{
 		m->Update();
-
-		if (m->Enabled && typeid(&m) == typeid(Texture))
-		{
-			Texture* t = (Texture*)m;
-			textCords[0] = t->textCords[0];
-			textCords[1] = t->textCords[1];
-			textCords[2] = t->textCords[2];
-			textCords[3] = t->textCords[3];
-		}
 	}
 
 	glTranslatef(Position.x + childOffset.x, Position.y + childOffset.y, 0);
@@ -104,13 +98,14 @@ void Entity::AddTorque(float t)
 void Entity::AddModule(Module* m)
 {
 	modules.push_back(m);
+	m->entity = this;
 }
 
 Module* Entity::GetModule(const type_info &i)
 {
 	for (Module* m : modules)
 	{
-		if (typeid(&m) == i)
+		if (typeid(&m) == typeid(i))
 		{
 			return m;
 		}

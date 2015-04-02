@@ -1,6 +1,7 @@
-#pragma once
+#ifndef CIRCLECOLLIDER_H
+#define CIRCLECOLLIDER_H
+
 #include "Common.h"
-#include "Module.h"
 #include "Entity.h"
 
 class CircleCollider: public Module
@@ -9,10 +10,13 @@ private:
 	vector<Entity*>* entities;
 
 public:
-	float radius;
+	float Radius;
 
 	void Update();
+	float Distance(vec2 v1, vec2 v2);
 
-	CircleCollider(vector<Entity*>* e, Entity* e);
+	CircleCollider(vector<Entity*>* e);
 	~CircleCollider();
 };
+
+#endif
