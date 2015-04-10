@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "Texture.h"
 #include "CircleCollider.h"
+#include "BoxCollider.h"
 #include "Entity.h"
 #include "Player1.h"
 #include "Player2.h"
@@ -89,9 +90,9 @@ void SetupLevel()
 	
 	background.push_back(bck);
 
+	//Add detail to background
 	srand(time(NULL));
-
-	int rnd1 = rand() % 250;
+	int rnd1 = clamp(rand() % 500, 250, 500);
 
 	for (int i = 0; i < rnd1; i++)
 	{
@@ -106,6 +107,18 @@ void SetupLevel()
 
 		background.push_back(bck2);
 	}
+
+	//Create Boundries
+	BoxCollider* boxLeft = new BoxCollider(&entities);
+	boxLeft->size = vec2(10, 10000);
+
+	Entity* borderLeft = new Entity(input);
+	borderLeft->AddModule(boxLeft);
+	borderLeft->Scale = vec2(10, 10000);
+	borderLeft->Position = vec2(-5000, 0);
+	entities.push_back(borderLeft);
+
+	//Add objects
 }
 
 void SetupPlayers()

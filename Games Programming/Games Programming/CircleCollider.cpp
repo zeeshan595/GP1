@@ -14,46 +14,95 @@ CircleCollider::~CircleCollider()
 
 void CircleCollider::Update()
 {
-	for (Entity* e : *entities)
-	{
-		CircleCollider* m = e->GetModule<CircleCollider>();
-		if (m != NULL)
-		{
-			if (Distance(e->Position, entity->Position) != 0)
-			{
-				float dis = Distance(e->Position + offset.x, entity->Position + offset.y);
-				if (((Radius / 2) + (m->Radius / 2)) > dis)
-				{
-					entity->Velocity = vec2((e->Mass * e->Velocity.x) / entity->Mass,(e->Mass * e->Velocity.y) / entity->Mass);
-					e->Velocity = vec2((entity->Mass * entity->Velocity.x) / e->Mass,(entity->Mass * entity->Velocity.y) / e->Mass);
-					
-					vec2 direction = e->Position - entity->Position;
-					direction = NormalizeVector(direction);
-					entity->Position -= direction;
-				}
-			}
-		}
-	}
+	ISColliding();
 }
 
 bool CircleCollider::ISColliding()
 {
 	for (Entity* e : *entities)
 	{
-		CircleCollider* m = e->GetModule<CircleCollider>();
-		if (m != NULL)
+		if (&e != &entity)
 		{
-			if (Distance(e->Position, entity->Position) != 0)
+			CircleCollider* cCol = e->GetModule<CircleCollider>();
+			BoxCollider* bCol = e->GetModule<BoxCollider>();
+			if (cCol != NULL)
 			{
-				float dis = Distance(e->Position + offset.x, entity->Position + offset.y);
-				if (((Radius / 2) + (m->Radius / 2)) > dis)
+				if (Distance(e->Position, entity->Position) != 0)
 				{
-					return true;
+					float dis = Distance(e->Position + offset.x, entity->Position + offset.y);
+					if (((Radius / 2) + (cCol->Radius / 2)) > dis)
+					{
+						vec2 direction = e->Position - entity->Position;
+						direction = NormalizeVector(direction);
+						entity->Position -= direction;
+						return true;
+					}
+				}
+			}
+			else if (bCol != NULL)
+			{
+				if (e->Position.x > entity->Position.x)
+				{
+					if (e->Position.y > entity->Position.y)
+					{
+						if (e->Position.x - (bCol->size.x / 2) < entity->Position.x + (Radius / 2))
+						{
+							entity->Position.x--;
+							return true;
+						}
+						else if (e->Position.y - (bCol->size.y / 2) < entity->Position.y + (Radius / 2))
+						{
+							entity->Position.y--;
+							return true;
+						}
+					}
+					else
+					{
+						if (e->Position.x - (bCol->size.x / 2) < entity->Position.x + (Radius / 2))
+						{
+							entity->Position.x--;
+							return true;
+						}
+						else if (e->Position.y + (bCol->size.y / 2) > entity->Position.y - (Radius / 2))
+						{
+							entity->Position.y++;
+							return true;
+						}
+					}
+				}
+				else
+				{
+					if (e->Position.y > entity->Position.y)
+					{
+						if (e->Position.x + (bCol->size.x / 2) < entity->Position.x - (Radius / 2))
+						{
+							cout << "test" << endl;
+							entity->Position.x++;
+							return true;
+						}
+						else if (e->Position.y - (bCol->size.y / 2) < entity->Position.y + (Radius / 2))
+						{
+							entity->Position.y--;
+							return true;
+						}
+					}
+					else
+					{
+						if (e->Position.x + (bCol->size.x / 2) < entity->Position.x - (Radius / 2))
+						{
+							entity->Position.x++;
+							return true;
+						}
+						else if (e->Position.y + (bCol->size.y / 2) < entity->Position.y - (Radius / 2))
+						{
+							entity->Position.y++;
+							return true;
+						}
+					}
 				}
 			}
 		}
 	}
-
 	return false;
 }
 

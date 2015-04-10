@@ -3,6 +3,7 @@
 
 #include "Common.h"
 #include "Entity.h"
+#include "BoxCollider.h"
 
 class CircleCollider: public Module
 {
