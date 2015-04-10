@@ -11,9 +11,9 @@ class Entity
 protected:
 	Input* input;
 	vector<Module*> modules;
+	vector<Entity*> child;
 	vec2 childOffset;
 	float childRotation;
-	Entity* child;
 
 public:
 	//Varibles
@@ -21,9 +21,9 @@ public:
 	float Rotation;
 	vec2 Scale;
 	bool IsStatic;
-	vec2 textCords[4];
-
+	vec2 UV[4];
 	vec2 PivotOffset;
+	bool Enabled;
 
 	//Physics
 	vec2 Velocity;
@@ -34,9 +34,8 @@ public:
 	void Render();
 	void FixedUpdate();
 	void AddModule(Module* m);
-	Module* GetModule(const type_info &i);
-	void SetChild(Entity* e);
-	Entity* GetChild();
+	void AddChild(Entity* e);
+	Entity* GetChild(int i);
 
 	//Virtual
 	virtual void Update();
@@ -44,6 +43,20 @@ public:
 	//Physics
 	void AddForce(vec2 f);
 	void AddTorque(float t);
+
+	//Template Method
+	template <typename T>
+	T* GetModule()
+	{
+		for (Module* m :modules)
+		{
+			if (dynamic_cast<T*>(m) != NULL)
+			{
+				return dynamic_cast<T*>(m);
+			}
+		}
+		return NULL;
+	}
 
 	Entity(Input* input);
 	~Entity();

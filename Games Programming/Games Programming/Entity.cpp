@@ -14,12 +14,11 @@ Entity::Entity(Input* input)
 	Mass = 1;
 	childOffset = vec2(0, 0);
 	childRotation = 0;
-	child = NULL;
-
-	textCords[0] = vec2(0, 0);
-	textCords[1] = vec2(1, 0);
-	textCords[2] = vec2(1, 1);
-	textCords[3] = vec2(0, 1);
+	Enabled = true;
+	UV[0] = vec2(0, 0);
+	UV[1] = vec2(1, 0);
+	UV[2] = vec2(1, 1);
+	UV[3] = vec2(0, 1);
 }
 
 
@@ -30,58 +29,76 @@ Entity::~Entity()
 
 void Entity::Render()
 {
-	glPushMatrix();
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-
-	for (Module* m : modules)
+	if (Enabled)
 	{
-		m->Update();
+		glPushMatrix();
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+
+		for (Module* m : modules)
+		{
+			m->Update();
+		}
+
+		glTranslatef(Position.x + childOffset.x, Position.y + childOffset.y, 0);
+		glRotatef(Rotation + childRotation, 0, 0, 1);
+		glTranslatef((-Scale.x / 2) + PivotOffset.x, (-Scale.y / 2) + PivotOffset.y, 0);
+		glScalef(Scale.x, Scale.y, 0);
+
+		glBegin(GL_QUADS);
+	
+		glColor3f(255, 255, 255);
+	
+		glTexCoord2i(UV[0].x, UV[0].y);
+		glVertex2i(0, 0);
+	
+		glTexCoord2i(UV[1].x, UV[1].y);
+		glVertex2i(1, 0);
+	
+		glTexCoord2i(UV[2].x, UV[2].y);
+		glVertex2i(1, 1);
+	
+		glTexCoord2i(UV[3].x, UV[3].y);
+		glVertex2i(0, 1);
+
+
+		glEnd();
+
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+		glPopMatrix();
+
+		for (Entity* c : child)
+		{
+			if (c != NULL)
+			{
+				c->Render();
+			}
+		}
 	}
-
-	glTranslatef(Position.x + childOffset.x, Position.y + childOffset.y, 0);
-	glRotatef(Rotation + childRotation, 0, 0, 1);
-	glTranslatef((-Scale.x / 2) + PivotOffset.x, (-Scale.y / 2) + PivotOffset.y, 0);
-	glScalef(Scale.x, Scale.y, 0);
-
-	glBegin(GL_QUADS);
-	
-	glColor3f(255, 255, 255);
-	
-	glTexCoord2i(textCords[0].x, textCords[0].y);
-	glVertex2i(0, 0);
-	
-	glTexCoord2i(textCords[1].x, textCords[1].y);
-	glVertex2i(1, 0);
-	
-	glTexCoord2i(textCords[2].x, textCords[2].y);
-	glVertex2i(1, 1);
-	
-	glTexCoord2i(textCords[3].x, textCords[3].y);
-	glVertex2i(0, 1);
-
-
-	glEnd();
-
-	glDisable(GL_TEXTURE_2D);
-	glPopMatrix();
-	Update();
 }
 
 void Entity::Update(){ }
 
 void Entity::FixedUpdate()
 {
-	if (!IsStatic)
+	if (Enabled)
 	{
-		Position += Velocity;
-		Rotation += Torque;
-	}
+		if (!IsStatic)
+		{
+			Position += Velocity;
+			Rotation += Torque;
+		}
 
-	if (child != NULL)
-	{
-		child->childOffset = Position;
-		child->childRotation = Rotation;
+		for (Entity* c : child)
+		{
+			if (c != NULL)
+			{
+				c->childOffset = Position;
+				c->childRotation = Rotation;
+			}
+		}
+		Update();
 	}
 }
 
@@ -101,25 +118,12 @@ void Entity::AddModule(Module* m)
 	m->entity = this;
 }
 
-Module* Entity::GetModule(const type_info &i)
+void Entity::AddChild(Entity* e)
 {
-	for (Module* m : modules)
-	{
-		if (typeid(&m) == typeid(i))
-		{
-			return m;
-		}
-	}
-
-	return NULL;
+	child.push_back(e);
 }
 
-void Entity::SetChild(Entity* e)
+Entity* Entity::GetChild(int i)
 {
-	child = e;
-}
-
-Entity* Entity::GetChild()
-{
-	return child;
+	return child.at(i);
 }

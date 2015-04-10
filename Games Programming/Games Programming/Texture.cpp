@@ -38,10 +38,10 @@ void Texture::Update()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glBindTexture(GL_TEXTURE_2D, GLTextureID);
 
-		entity->textCords[0] = textCords[0];
-		entity->textCords[1] = textCords[1];
-		entity->textCords[2] = textCords[2];
-		entity->textCords[3] = textCords[3];
+		entity->UV[0] = textCords[0];
+		entity->UV[1] = textCords[1];
+		entity->UV[2] = textCords[2];
+		entity->UV[3] = textCords[3];
 	}
 }
 

@@ -3,10 +3,13 @@
 
 #include "Input.h"
 #include "Entity.h"
+#include "Texture.h"
+#include "CircleCollider.h"
 
 class Player1: public Entity
 {
 public:
+	int Health;
 	float Speed;
 	float RotationSpeed;
 

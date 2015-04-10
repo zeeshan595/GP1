@@ -3,10 +3,12 @@
 
 #include "Input.h"
 #include "Entity.h"
+#include "Texture.h"
 
 class Player2: public Entity
 {
 public:
+	int Health;
 	float Speed;
 	float RotationSpeed;
 

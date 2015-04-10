@@ -3,7 +3,7 @@
 
 CircleCollider::CircleCollider(vector<Entity*>* e)
 {
-	Radius = 50;
+	Radius = 100;
 	entities = e;
 }
 
@@ -16,24 +16,54 @@ void CircleCollider::Update()
 {
 	for (Entity* e : *entities)
 	{
-		CircleCollider* m = static_cast<CircleCollider*>(e->GetModule(typeid(CircleCollider)));
+		CircleCollider* m = e->GetModule<CircleCollider>();
 		if (m != NULL)
 		{
-			cout << "works!";
-			if ((Radius + m->Radius) < Distance(e->Position, entity->Position))
+			if (Distance(e->Position, entity->Position) != 0)
 			{
-				vec2 totalVelocity = e->Velocity + entity->Velocity;
-				float totalMass = e->Mass + entity->Mass;
-				vec2 momentum = vec2(totalVelocity.x / totalMass, totalVelocity.y / totalMass);
-				entity->Velocity.x = momentum.x * entity->Mass;
-				entity->Velocity.y = momentum.y * entity->Mass;
-
+				float dis = Distance(e->Position + offset.x, entity->Position + offset.y);
+				if (((Radius / 2) + (m->Radius / 2)) > dis)
+				{
+					entity->Velocity = vec2((e->Mass * e->Velocity.x) / entity->Mass,(e->Mass * e->Velocity.y) / entity->Mass);
+					e->Velocity = vec2((entity->Mass * entity->Velocity.x) / e->Mass,(entity->Mass * entity->Velocity.y) / e->Mass);
+					
+					vec2 direction = e->Position - entity->Position;
+					direction = NormalizeVector(direction);
+					entity->Position -= direction;
+				}
 			}
 		}
 	}
 }
 
+bool CircleCollider::ISColliding()
+{
+	for (Entity* e : *entities)
+	{
+		CircleCollider* m = e->GetModule<CircleCollider>();
+		if (m != NULL)
+		{
+			if (Distance(e->Position, entity->Position) != 0)
+			{
+				float dis = Distance(e->Position + offset.x, entity->Position + offset.y);
+				if (((Radius / 2) + (m->Radius / 2)) > dis)
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 float CircleCollider::Distance(vec2 v1, vec2 v2)
 {
 	return abs(sqrt(((v1.x - v2.x) * (v1.x - v2.x)) + ((v1.y - v2.y) * (v1.y - v2.y))));
+}
+
+vec2 CircleCollider::NormalizeVector(vec2 v)
+{
+	float mag = sqrt((v.x * v.x) + (v.y * v.y));
+	return vec2(v.x / mag, v.y / mag);
 }

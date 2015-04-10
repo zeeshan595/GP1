@@ -10,10 +10,13 @@ private:
 	vector<Entity*>* entities;
 
 public:
+	vec2 offset;
 	float Radius;
 
-	void Update();
+	virtual void Update();
 	float Distance(vec2 v1, vec2 v2);
+	vec2 NormalizeVector(vec2 v);
+	bool ISColliding();
 
 	CircleCollider(vector<Entity*>* e);
 	~CircleCollider();
