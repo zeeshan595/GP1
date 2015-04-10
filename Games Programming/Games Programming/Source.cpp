@@ -75,7 +75,37 @@ void SetupLevel()
 	//c->Play();
 
 	//Generate Level
+	int LEVEL_WIDTH = 10000;
+	int LEVEL_HEIGHT = 10000;
 
+	//Create Background
+	Texture* bck_T1 = new Texture("Images/Background1.png");
+	Texture* bck_T2 = new Texture("Images/Background2.png");
+
+	Entity* bck = new Entity(input);
+	bck->AddModule(bck_T2);
+	bck->Scale = vec2(LEVEL_WIDTH, LEVEL_HEIGHT);
+	bck->Position = vec2(0, 0);
+	
+	background.push_back(bck);
+
+	srand(time(NULL));
+
+	int rnd1 = rand() % 250;
+
+	for (int i = 0; i < rnd1; i++)
+	{
+		int x = rand() % 10000;
+		int y = rand() % 10000;
+		int size = rand() % 500;
+
+		Entity* bck2 = new Entity(input);
+		bck2->AddModule(bck_T1);
+		bck2->Scale = vec2(size, size);
+		bck2->Position = vec2(x - 5000, y - 5000);
+
+		background.push_back(bck2);
+	}
 }
 
 void SetupPlayers()
@@ -89,7 +119,7 @@ void SetupPlayers()
 	p1->AddModule(c1);
 	p1->AddModule(t1);
 	p1->Scale = vec2(100, 100);
-	p1->Position = vec2(50, 50);
+	p1->Position = vec2(-500, -500);
 	p1->Mass = 50;
 	p1->Rotation = 135;
 	entities.push_back(p1);
@@ -102,7 +132,7 @@ void SetupPlayers()
 	p2->AddModule(c2);
 	p2->AddModule(t2);
 	p2->Scale = vec2(100, 100);
-	p2->Position = vec2(750, 550);
+	p2->Position = vec2(500, 500);
 	p2->Mass = 50;
 	p2->Rotation = -45;
 	entities.push_back(p2);
@@ -163,15 +193,17 @@ void Render()
     glLoadIdentity();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	//Camera Follow
-	vec2 CamereaPosition = (entities[0]->Position - entities[1]->Position);
+	//Change camera position to  be in the center of the 2 players
+	vec2 CamereaPosition = (entities[0]->Position + entities[1]->Position);
 	CamereaPosition = CamereaPosition * 0.5f;
-	glTranslatef(-CamereaPosition.x, -CamereaPosition.y, 0);
+	glTranslatef((WINDOW_WIDTH / 2),(WINDOW_HEIGHT / 2), 0);
 
-	//cameraSize = Distance(entities[0]->Position, entities[1]->Position);
-	//cameraSize = 1 / (cameraSize / 1000);
-	//cout << cameraSize << endl;
-	//glScalef(cameraSize, cameraSize, 0);
+	//Scale depending on how far the 2 space ships are
+	cameraSize = Distance(entities[0]->Position, entities[1]->Position);
+	cameraSize = 1 / (cameraSize / 1000);
+	glScalef(cameraSize, cameraSize, 0);
+	//Change the position so we can scale from the center of the screen
+	glTranslatef(-CamereaPosition.x, -CamereaPosition.y, 0);
 
 	//Make sure we render background first
 	//for (list<Entity>::iterator iter=entities.begin();iter!=entities.end();++iter)
@@ -193,7 +225,10 @@ void Update(int i)
 	entities[2]->Scale = vec2(static_cast<Player1*>(entities[0])->Health, 10);
 	entities[2]-> Position = entities[0]->Position + vec2(0, -100);
 
+	entities[3]->Scale = vec2(static_cast<Player1*>(entities[1])->Health, 10);
+	entities[3]-> Position = entities[1]->Position + vec2(0, -100);
 
+	//If Q or P is pressed shoot
 	if (input->GetKey(KEYS::Q))
 	{
 		CircleCollider* c = new CircleCollider(&entities);
