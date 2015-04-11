@@ -6,14 +6,35 @@
 class AudioClip : Module
 {
 private:
+	string name;
 	LPCSTR filename;
 
 public:
 	void Play()
 	{
-		PlaySound(filename, NULL, SND_ASYNC);
+		string command = "play " + name;
+		mciSendString(command.c_str(), NULL, 0, 0);
 	}
 
-	AudioClip(char* filename);
-	~AudioClip();
+	void Pause()
+	{
+		string command = "pause " + name;
+		mciSendString(command.c_str(), NULL, 0, 0);
+	}
+
+	void Stop()
+	{
+		string command = "stop " + name;
+		mciSendString(command.c_str(), NULL, 0, 0);
+	}
+
+	AudioClip(string filename, string name)
+	{
+		string command = "open " + filename + " type mpegvideo alias " + name;
+		mciSendString(command.c_str(), NULL, 0, 0);
+	}
+	~AudioClip()
+	{
+
+	}
 };

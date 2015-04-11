@@ -28,7 +28,7 @@ void KeyboardUp(unsigned char k, int x, int y);
 void KeyboardDown(unsigned char k, int x, int y);
 void SetupPlayers();
 void SetupLevel();
-float Distance(vec2 v1, vec2 v2);
+void CalculateCollision();
 
 int main(int argc, char **argv)
 {
@@ -194,7 +194,6 @@ void Reshape(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	float distance = Distance(entities[0]->Position, entities[1]->Position);
 	glOrtho(0, w, h, 0, -1, 1);
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -213,7 +212,7 @@ void Render()
 	glTranslatef((WINDOW_WIDTH / 2),(WINDOW_HEIGHT / 2), 0);
 
 	//Scale depending on how far the 2 space ships are
-	cameraSize = Distance(entities[0]->Position, entities[1]->Position);
+	cameraSize = glm::distance(entities[0]->Position, entities[1]->Position);
 	cameraSize = 1 / (cameraSize / 1000);
 	glScalef(cameraSize, cameraSize, 0);
 	//Change the position so we can scale from the center of the screen
@@ -260,21 +259,29 @@ void Update(int i)
 		bullets.push_back(bullet);
 	}
 
+	//If Q or P is pressed shoot
+	if (input->GetKey(KEYS::N))
+	{
+		CircleCollider* c = new CircleCollider();
+		Texture* t = new Texture("Images/Rocket.png");
+
+		Bullet* bullet = new Bullet(input);
+		bullet->AddModule(t);
+		bullet->AddModule(c);
+		bullet->Position = entities[1]->Position + vec2(sin(entities[1]->Rotation * 3.14 / 180) * 100, -cos(entities[1]->Rotation* 3.14 / 180) * 100);
+		bullet->Scale = vec2(20, 76);
+		bullet->Rotation = entities[1]->Rotation;
+		bullet->AddForce(vec2(sin(entities[1]->Rotation * 3.14 / 180) * 50, -cos(entities[1]->Rotation* 3.14 / 180) * 50));
+		bullet->Mass = 10;
+		entities.push_back(bullet);
+		bullets.push_back(bullet);
+	}
+
+	CalculateCollision();
+
 	for (Entity* e : entities)
 	{
 		e->FixedUpdate();
-	}
-
-	for (Entity* e : bullets)
-	{
-		CircleCollider* coll = e->GetModule<CircleCollider>();
-		if (coll != NULL)
-		{
-			if (coll->ISColliding())
-			{
-				//delete e;
-			}
-		}
 	}
 
 	// Reset timer
@@ -297,8 +304,16 @@ void KeyboardDown(unsigned char k, int x, int y)
 		cameraSize -= 0.1f;
 }
 
-//Helper Functions
-float Distance(vec2 v1, vec2 v2)
+void CalculateCollision()
 {
-	return abs(sqrt(((v1.x - v2.x) * (v1.x - v2.x)) + ((v1.y - v2.y) * (v1.y - v2.y))));
+	for (Entity* e : entities)
+	{
+		for (Entity* entity : entities)
+		{
+			if (&entity != &e)
+			{
+
+			}
+		}
+	}
 }
