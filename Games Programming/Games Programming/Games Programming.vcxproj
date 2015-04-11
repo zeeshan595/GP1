@@ -66,6 +66,7 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
+    <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="Player2.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="PixelCollider.h" />
     <ClInclude Include="Player2.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Entity.h" />

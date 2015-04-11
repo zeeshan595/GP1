@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "CircleCollider.h"
 #include "BoxCollider.h"
+#include "PixelCollider.h"
 #include "Entity.h"
 #include "Player1.h"
 #include "Player2.h"
@@ -109,7 +110,7 @@ void SetupLevel()
 	}
 
 	//Create Boundries
-	BoxCollider* boxLeft = new BoxCollider(&entities);
+	BoxCollider* boxLeft = new BoxCollider();
 	boxLeft->size = vec2(10, 10000);
 
 	Entity* borderLeft = new Entity(input);
@@ -126,7 +127,7 @@ void SetupPlayers()
 	//Main Players
 	Player1* p1 = new Player1(input);
 	Texture* t1 = new Texture("Images/Ship1.png");
-	CircleCollider* c1 = new CircleCollider(&entities);
+	CircleCollider* c1 = new CircleCollider();
 	c1->Radius = 100;
 	c1->offset = vec2(0, 0);
 	p1->AddModule(c1);
@@ -139,7 +140,7 @@ void SetupPlayers()
 
 	Player2* p2 = new Player2(input);
 	Texture* t2 = new Texture("Images/Ship2.png");
-	CircleCollider* c2 = new CircleCollider(&entities);
+	CircleCollider* c2 = new CircleCollider();
 	c2->Radius = 100;
 	c2->offset = vec2(0, 0); 
 	p2->AddModule(c2);
@@ -244,7 +245,7 @@ void Update(int i)
 	//If Q or P is pressed shoot
 	if (input->GetKey(KEYS::Q))
 	{
-		CircleCollider* c = new CircleCollider(&entities);
+		CircleCollider* c = new CircleCollider();
 		Texture* t = new Texture("Images/Rocket.png");
 
 		Bullet* bullet = new Bullet(input);

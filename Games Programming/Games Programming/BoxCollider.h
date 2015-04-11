@@ -7,9 +7,6 @@
 
 class BoxCollider: public Module
 {
-private:
-	vector<Entity*>* entities;
-
 public:
 	vec2 offset;
 	vec2 size;
@@ -19,7 +16,7 @@ public:
 	vec2 NormalizeVector(vec2 v);
 	void Update();
 
-	BoxCollider(vector<Entity*>* e);
+	BoxCollider();
 	~BoxCollider();
 };
 

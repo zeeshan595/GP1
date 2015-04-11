@@ -7,9 +7,6 @@
 
 class CircleCollider: public Module
 {
-private:
-	vector<Entity*>* entities;
-
 public:
 	vec2 offset;
 	float Radius;
@@ -19,7 +16,7 @@ public:
 	vec2 NormalizeVector(vec2 v);
 	bool ISColliding();
 
-	CircleCollider(vector<Entity*>* e);
+	CircleCollider();
 	~CircleCollider();
 };
 
