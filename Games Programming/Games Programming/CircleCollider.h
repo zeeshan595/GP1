@@ -4,17 +4,14 @@
 #include "Common.h"
 #include "Entity.h"
 #include "BoxCollider.h"
+#include "Collider.h"
 
-class CircleCollider: public Module
+class CircleCollider: public Collider
 {
 public:
-	vec2 offset;
 	float Radius;
 
-	virtual void Update();
-	float Distance(vec2 v1, vec2 v2);
-	vec2 NormalizeVector(vec2 v);
-	bool ISColliding();
+	void Update();
 
 	CircleCollider();
 	~CircleCollider();

@@ -14,7 +14,6 @@
 //Public Varibles
 vector<Entity*> background;
 vector<Entity*> entities;
-vector<Entity*> bullets;
 Input* input;
 float cameraSize = 1;
 int WINDOW_WIDTH = 1600;
@@ -46,7 +45,6 @@ int main(int argc, char **argv)
 	glutCreateWindow("2D Fight");
 
 	//Create Game
-	SetupPlayers();
 	SetupLevel();
 
 	//Setup OpenGL Methods
@@ -72,8 +70,9 @@ int main(int argc, char **argv)
 
 void SetupLevel()
 {
+	SetupPlayers();
 	//Player Background Music
-	AudioClip* c = new AudioClip("Audio/Music.wav");
+	AudioClip* c = new AudioClip("Audio/Music.wav", "Music");
 	//c->Play();
 
 	//Generate Level
@@ -92,7 +91,7 @@ void SetupLevel()
 	background.push_back(bck);
 
 	//Add detail to background
-	srand(time(NULL));
+	srand(static_cast<int>(time(NULL)));
 	int rnd1 = clamp(rand() % 500, 250, 500);
 
 	for (int i = 0; i < rnd1; i++)
@@ -110,13 +109,15 @@ void SetupLevel()
 	}
 
 	//Create Boundries
-	BoxCollider* boxLeft = new BoxCollider();
-	boxLeft->size = vec2(10, 10000);
+	BoxCollider* tallBox = new BoxCollider();
+	tallBox->size = vec2(100, 10000);
+	tallBox->bounceRatio = 0.5;
 
 	Entity* borderLeft = new Entity(input);
-	borderLeft->AddModule(boxLeft);
-	borderLeft->Scale = vec2(10, 10000);
-	borderLeft->Position = vec2(-5000, 0);
+	borderLeft->IsStatic = true;
+	borderLeft->AddModule(tallBox);
+	borderLeft->Scale = vec2(100, 10000);
+	borderLeft->Position = vec2(-5050, 0);
 	entities.push_back(borderLeft);
 
 	//Add objects
@@ -129,7 +130,6 @@ void SetupPlayers()
 	Texture* t1 = new Texture("Images/Ship1.png");
 	CircleCollider* c1 = new CircleCollider();
 	c1->Radius = 100;
-	c1->offset = vec2(0, 0);
 	p1->AddModule(c1);
 	p1->AddModule(t1);
 	p1->Scale = vec2(100, 100);
@@ -142,7 +142,6 @@ void SetupPlayers()
 	Texture* t2 = new Texture("Images/Ship2.png");
 	CircleCollider* c2 = new CircleCollider();
 	c2->Radius = 100;
-	c2->offset = vec2(0, 0); 
 	p2->AddModule(c2);
 	p2->AddModule(t2);
 	p2->Scale = vec2(100, 100);
@@ -209,11 +208,12 @@ void Render()
 	//Change camera position to  be in the center of the 2 players
 	vec2 CamereaPosition = (entities[0]->Position + entities[1]->Position);
 	CamereaPosition = CamereaPosition * 0.5f;
-	glTranslatef((WINDOW_WIDTH / 2),(WINDOW_HEIGHT / 2), 0);
+	glTranslatef(static_cast<GLfloat>(WINDOW_WIDTH / 2),static_cast<GLfloat>(WINDOW_HEIGHT / 2), 0);
 
 	//Scale depending on how far the 2 space ships are
 	cameraSize = glm::distance(entities[0]->Position, entities[1]->Position);
 	cameraSize = 1 / (cameraSize / 1000);
+	cameraSize = glm::clamp(cameraSize, 0.5f, 5.0f);
 	glScalef(cameraSize, cameraSize, 0);
 	//Change the position so we can scale from the center of the screen
 	glTranslatef(-CamereaPosition.x, -CamereaPosition.y, 0);
@@ -250,13 +250,12 @@ void Update(int i)
 		Bullet* bullet = new Bullet(input);
 		bullet->AddModule(t);
 		bullet->AddModule(c);
-		bullet->Position = entities[0]->Position + vec2(sin(entities[0]->Rotation * 3.14 / 180) * 100, -cos(entities[0]->Rotation* 3.14 / 180) * 100);
+		bullet->Position = entities[0]->Position + vec2(sin(entities[0]->Rotation * 3.14 / 180) * 150, -cos(entities[0]->Rotation* 3.14 / 180) * 150);
 		bullet->Scale = vec2(20, 76);
 		bullet->Rotation = entities[0]->Rotation;
-		bullet->AddForce(vec2(sin(entities[0]->Rotation * 3.14 / 180) * 50, -cos(entities[0]->Rotation* 3.14 / 180) * 50));
+		bullet->AddForce(vec2(sin(entities[0]->Rotation * 3.14 / 180) * 5, -cos(entities[0]->Rotation* 3.14 / 180) * 5));
 		bullet->Mass = 10;
 		entities.push_back(bullet);
-		bullets.push_back(bullet);
 	}
 
 	//If Q or P is pressed shoot
@@ -268,13 +267,12 @@ void Update(int i)
 		Bullet* bullet = new Bullet(input);
 		bullet->AddModule(t);
 		bullet->AddModule(c);
-		bullet->Position = entities[1]->Position + vec2(sin(entities[1]->Rotation * 3.14 / 180) * 100, -cos(entities[1]->Rotation* 3.14 / 180) * 100);
+		bullet->Position = entities[1]->Position + vec2(sin(entities[1]->Rotation * 3.14 / 180) * 150, -cos(entities[1]->Rotation* 3.14 / 180) * 150);
 		bullet->Scale = vec2(20, 76);
 		bullet->Rotation = entities[1]->Rotation;
-		bullet->AddForce(vec2(sin(entities[1]->Rotation * 3.14 / 180) * 50, -cos(entities[1]->Rotation* 3.14 / 180) * 50));
+		bullet->AddForce(vec2(sin(entities[1]->Rotation * 3.14 / 180) * 5, -cos(entities[1]->Rotation* 3.14 / 180) * 5));
 		bullet->Mass = 10;
 		entities.push_back(bullet);
-		bullets.push_back(bullet);
 	}
 
 	CalculateCollision();
@@ -298,10 +296,98 @@ void KeyboardUp(unsigned char k, int x, int y)
 void KeyboardDown(unsigned char k, int x, int y)
 {
 	input->SetKey((KEYS)((int)toupper(k)), true);
-	if (k == 'm')
-		cameraSize += 0.1f;
-	else if (k == 'n')
-		cameraSize -= 0.1f;
+}
+
+#pragma region
+
+bool CircleCollision(CircleCollider* collider, CircleCollider* cCol2, PixelCollider* pCol2, BoxCollider* bCol2, vec2* point)
+{
+	if (cCol2 != NULL)
+	{
+		if (((collider->Radius / 2) + (cCol2->Radius / 2)) > glm::distance(collider->entity->Position, cCol2->entity->Position))
+		{
+			point->x = (collider->entity->Position.x + cCol2->entity->Position.x) / 2.0f;
+			point->y = (collider->entity->Position.y + cCol2->entity->Position.y) / 2.0f;
+			return true;
+		}
+
+	}
+	else if (pCol2 != NULL)
+	{
+		//PIXEL COLLISION
+	}
+	else if (bCol2 != NULL)
+	{
+		if (glm::abs(bCol2->top - collider->entity->Position.y) <= collider->Radius / 2)
+		{
+			point->x = collider->entity->Position.x;
+			point->y = bCol2->top;
+			return true;
+		}
+		else if (glm::abs(bCol2->bottom - collider->entity->Position.y) <= collider->Radius / 2)
+		{
+			point->x = collider->entity->Position.x;
+			point->y = bCol2->bottom;
+			return true;
+		}
+		else if (glm::abs(bCol2->right - collider->entity->Position.x) <= collider->Radius / 2)
+		{
+			point->x = bCol2->right;
+			point->y = collider->entity->Position.y;
+			return true;
+		}
+		else if (glm::abs(bCol2->left - collider->entity->Position.x) <= collider->Radius / 2)
+		{
+			point->x = bCol2->left;
+			point->y = collider->entity->Position.y;
+			return true;
+		}
+	}
+	else
+	{
+		cout << "--ERROR CALCULATING COLLISION (entity)--" << endl;
+		return false;
+	}
+
+	return false;
+}
+
+bool BoxCollision(BoxCollider* collider, CircleCollider* cCol2, PixelCollider* pCol2, BoxCollider* bCol2)
+{
+	if (cCol2 != NULL)
+	{
+		if (glm::abs(collider->top - cCol2->entity->Position.y) <= cCol2->Radius)
+		{
+			return true;
+		}
+		else if (glm::abs(collider->bottom - cCol2->entity->Position.y) <= cCol2->Radius)
+		{
+			return true;
+		}
+		else if (glm::abs(collider->right - cCol2->entity->Position.y) <= cCol2->Radius)
+		{
+			return true;
+		}
+		else if (glm::abs(collider->left - cCol2->entity->Position.y) <= cCol2->Radius)
+		{
+			return true;
+		}
+	}
+	else if (pCol2 != NULL)
+	{
+		//PIXEL COLLISION
+	}
+	else if (bCol2 != NULL)
+	{
+		return true;
+	}
+	else
+	{
+		cout << "--ERROR CALCULATING COLLISION (entity)--" << endl;
+		return false;
+	}
+
+	return false;
 }
 
 void CalculateCollision()
@@ -310,10 +396,88 @@ void CalculateCollision()
 	{
 		for (Entity* entity : entities)
 		{
-			if (&entity != &e)
+			if (entity != e && !e->IsStatic)
 			{
+				Collider* c1 = e->GetModule<Collider>();
+				Collider* c2 = entity->GetModule<Collider>();
 
+				if (c1 != NULL && c2 != NULL)
+				{
+					//check if the 2 objects are near each other
+					if (c1->top > c2->bottom || c1->bottom < c2->top)
+					{
+						if (c1->right > c2->left || c1->left < c2->right)
+						{
+							CircleCollider* cCol = dynamic_cast<CircleCollider*>(c1);
+							PixelCollider* pCol = dynamic_cast<PixelCollider*>(c1);
+							BoxCollider* bCol = dynamic_cast<BoxCollider*>(c1);
+							if (cCol != NULL)
+							{
+								CircleCollider* cCol2 = dynamic_cast<CircleCollider*>(c2);
+								PixelCollider* pCol2 = dynamic_cast<PixelCollider*>(c2);
+								BoxCollider* bCol2 = dynamic_cast<BoxCollider*>(c2);
+								vec2* point = new vec2(0, 0);
+								c1->colliding = CircleCollision(cCol, cCol2, pCol2, bCol2, point);
+								if (c1->colliding)
+								{
+									if (!entity->IsStatic)
+									{
+										float xRatio = (e->Velocity.x + entity->Velocity.x) / (e->Mass + entity->Mass);
+										float yRatio = (e->Velocity.y + entity->Velocity.y) / (e->Mass + entity->Mass);
+
+										vec2 normal = glm::normalize(*point - e->Position);
+										e->Position -= normal;
+
+										e->Velocity = (vec2(xRatio, yRatio) * e->Mass) - (e->Velocity * c2->bounceRatio);
+										entity->Velocity = (vec2(xRatio, yRatio) * entity->Mass) - (entity->Velocity * c1->bounceRatio);
+									}
+									else
+									{
+										vec2 normal = glm::normalize(*point - e->Position);
+										e->Position -= normal;
+										e->Velocity *= -c2->bounceRatio;
+									}
+								}
+							}
+							else if (pCol != NULL)
+							{
+
+							}
+							else if (bCol != NULL)
+							{
+								CircleCollider* cCol2 = static_cast<CircleCollider*>(c2);
+								PixelCollider* pCol2 = static_cast<PixelCollider*>(c2);
+								BoxCollider* bCol2 = static_cast<BoxCollider*>(c2);
+								c1->colliding = BoxCollision(bCol, cCol2, pCol2, bCol2);
+								if (c1->colliding)
+								{
+									float xRatio = (e->Velocity.x + entity->Velocity.x) / (e->Mass + entity->Mass);
+									float yRatio = (e->Velocity.y + entity->Velocity.y) / (e->Mass + entity->Mass);
+
+									vec2 normal = glm::normalize(entity->Position - e->Position);
+									e->Position -= normal;
+
+									e->Velocity = vec2(xRatio, yRatio) * e->Mass;
+								}
+								else
+								{
+
+								}
+							}
+							else
+							{
+								cout << "--ERROR CALCULATING COLLISION (e)--" << endl;
+							}
+						}
+					}
+					else
+					{
+						c1->colliding = false;
+					}
+				}
 			}
 		}
 	}
 }
+
+#pragma endregion

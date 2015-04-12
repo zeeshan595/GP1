@@ -35,6 +35,7 @@ public:
 	}
 	~AudioClip()
 	{
-
+		string command = "stop " + name;
+		mciSendString(command.c_str(), NULL, 0, 0);
 	}
 };

@@ -9,6 +9,7 @@ private:
 
 public:
 	bool GetKey(KEYS k);
+
 	void SetKey(KEYS k, bool b);
 
 	Input();

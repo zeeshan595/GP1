@@ -13,10 +13,8 @@ CircleCollider::~CircleCollider()
 
 void CircleCollider::Update()
 {
-	ISColliding();
-}
-
-bool CircleCollider::ISColliding()
-{
-	return false;
+	top = entity->Position.y + Radius;
+	bottom = entity->Position.y - Radius;
+	right = entity->Position.x + Radius;
+	left = entity->Position.x - Radius;
 }

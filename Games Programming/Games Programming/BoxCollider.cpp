@@ -4,7 +4,6 @@
 BoxCollider::BoxCollider()
 {
 	size = vec2(1, 1);
-	offset = vec2(0, 0);
 }
 
 
@@ -14,10 +13,8 @@ BoxCollider::~BoxCollider()
 
 void BoxCollider::Update()
 {
-	ISColliding();
-}
-
-bool BoxCollider::ISColliding()
-{
-	return false;
+	top = entity->Position.y + (size.y / 2);
+	bottom = entity->Position.y - (size.y / 2);
+	right = entity->Position.x + (size.x / 2);
+	left = entity->Position.x - (size.x / 2);
 }

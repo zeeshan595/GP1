@@ -79,6 +79,7 @@
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CircleCollider.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="PixelCollider.h" />
     <ClInclude Include="Player2.h" />

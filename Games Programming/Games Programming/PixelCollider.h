@@ -3,13 +3,12 @@
 
 #include "Common.h"
 #include "Entity.h"
+#include "Collider.h"
 
-class PixelCollider : Module
+class PixelCollider : public Collider
 {
 public:
 	void Update();
-
-	bool IsColliding();
 
 	PixelCollider();
 	~PixelCollider();
