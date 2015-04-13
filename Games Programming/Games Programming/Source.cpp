@@ -113,11 +113,36 @@ void SetupLevel()
 	tallBox->size = vec2(100, 10000);
 	tallBox->bounceRatio = 0.5;
 
+	BoxCollider* wideBox = new BoxCollider();
+	tallBox->size = vec2(10000, 100);
+	tallBox->bounceRatio = 0.5;
+
 	Entity* borderLeft = new Entity(input);
 	borderLeft->IsStatic = true;
 	borderLeft->AddModule(tallBox);
 	borderLeft->Scale = vec2(100, 10000);
 	borderLeft->Position = vec2(-5050, 0);
+	entities.push_back(borderLeft);
+
+	Entity* borderRight = new Entity(input);
+	borderRight->IsStatic = true;
+	borderRight->AddModule(tallBox);
+	borderRight->Scale = vec2(100, 10000);
+	borderRight->Position = vec2(5050, 0);
+	entities.push_back(borderRight);
+
+	Entity* boderTop = new Entity(input);
+	boderTop->IsStatic = true;
+	boderTop->AddModule(wideBox);
+	boderTop->Scale = vec2(10000, 100);
+	boderTop->Position = vec2(0, -5050);
+	entities.push_back(boderTop);
+
+	Entity* borderBottom = new Entity(input);
+	borderLeft->IsStatic = true;
+	borderLeft->AddModule(wideBox);
+	borderLeft->Scale = vec2(10000, 100);
+	borderLeft->Position = vec2(0, 5050);
 	entities.push_back(borderLeft);
 
 	//Add objects
