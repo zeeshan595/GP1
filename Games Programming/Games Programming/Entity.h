@@ -31,7 +31,6 @@ public:
 	float Mass;
 
 	//Methods
-	virtual void Render();
 	void FixedUpdate();
 	void AddModule(Module* m);
 	void AddChild(Entity* e);
@@ -39,6 +38,7 @@ public:
 
 	//Virtual
 	virtual void Update();
+	virtual void Render();
 
 	//Physics
 	void AddForce(vec2 f);
