@@ -10,10 +10,12 @@
 #include "Bullet.h"
 #include "Thruster.h"
 #include "AudioClip.h"
+#include "Button.h"
 
 //Public Varibles
 vector<Entity*> background;
 vector<Entity*> entities;
+vector<Button*> buttons;
 Input* input;
 float cameraSize = 1;
 int WINDOW_WIDTH = 1600;
@@ -30,6 +32,12 @@ void SetupPlayers();
 void SetupLevel();
 void CalculateCollision();
 void ChangeScene(int id);
+void SetupMenu();
+void SetupEndScene();
+void SpecialKeyDown(int c, int x, int y);
+void SpecialKeyUp(int c, int x, int y);
+void Mouse(int b, int s, int x, int y);
+void MousePosition(int x, int y);
 
 int main(int argc, char **argv)
 {
@@ -48,7 +56,7 @@ int main(int argc, char **argv)
 
 	//Player Background Music
 	AudioClip* c = new AudioClip("Audio/Music.wav", "Music");
-	//c->Play();
+	c->Play();
 
 	//Create Game
 	ChangeScene(0);
@@ -59,6 +67,10 @@ int main(int argc, char **argv)
 	glutTimerFunc( 10 , Update, 0);
 	glutKeyboardUpFunc(KeyboardUp);
 	glutKeyboardFunc(KeyboardDown);
+	glutSpecialFunc(SpecialKeyDown);
+	glutSpecialUpFunc(SpecialKeyUp);
+	glutMouseFunc(Mouse);
+	glutPassiveMotionFunc(MousePosition);
 
 	//Very important! This initializes the entry point in the OpenGL driver so we can 
 	//call the functions in the api
@@ -78,19 +90,147 @@ void ChangeScene(int id)
 {
 	background.clear();
 	entities.clear();
+	buttons.clear();
+
 	switch(id)
 	{
 	case 0:
-
+		SetupMenu();
 		break;
 	case 1:
 		SetupLevel();
 		break;
 	case 2:
-
+		SetupEndScene();
 		break;
 	}
 	CURRENT_LEVEL = id;
+}
+
+void SetupMenu()
+{
+	//Generate Level
+	int LEVEL_WIDTH = 10000;
+	int LEVEL_HEIGHT = 10000;
+
+	//Create Background
+	Texture* bck_T1 = new Texture("Images/Background1.png");
+	Texture* bck_T2 = new Texture("Images/Background2.png");
+
+	Entity* bck = new Entity(input);
+	bck->AddModule(bck_T2);
+	bck->Scale = vec2(LEVEL_WIDTH, LEVEL_HEIGHT);
+	bck->Position = vec2(0, 0);
+	
+	background.push_back(bck);
+
+	//Add detail to background
+	srand(static_cast<int>(time(NULL)));
+	int rnd1 = clamp(rand() % 500, 250, 500);
+
+	for (int i = 0; i < rnd1; i++)
+	{
+		int x = rand() % 10000;
+		int y = rand() % 10000;
+		int size = rand() % 500;
+
+		Entity* bck2 = new Entity(input);
+		bck2->AddModule(bck_T1);
+		bck2->Scale = vec2(size, size);
+		bck2->Position = vec2(x - 5000, y - 5000);
+
+		background.push_back(bck2);
+	}
+
+	//Main Menu Objects
+	Entity* ship = new Entity(input);
+	Texture* ship_texture = new Texture("Images/Ship1.png");
+	ship->AddModule(ship_texture);
+	ship->Scale = vec2(100, 100);
+	ship->Position = vec2(400, 800);
+	ship->Mass = 50;
+	ship->Rotation = -45;
+	ship->IsStatic = true;
+	entities.push_back(ship);
+
+	Entity* title = new Entity(input);
+	Texture* title_texture = new Texture("Images/title.png");
+	title->AddModule(title_texture);
+	title->Scale = vec2(512, 100);
+	title->Position = vec2(800, 200);
+	title->IsStatic = true;
+	entities.push_back(title);
+
+	Texture* start_normal = new Texture("Images/Button/Start_Normal.png");
+	Texture* start_hover = new Texture("Images/Button/Start_Hover.png");
+
+	Button* start_button = new Button(input, start_normal, start_hover);
+	start_button->Scale = vec2(300, 100);
+	start_button->Position = vec2(800, 700);
+	buttons.push_back(start_button);
+}
+
+void SetupEndScene()
+{
+	//Generate Level
+	int LEVEL_WIDTH = 10000;
+	int LEVEL_HEIGHT = 10000;
+
+	//Create Background
+	Texture* bck_T1 = new Texture("Images/Background1.png");
+	Texture* bck_T2 = new Texture("Images/Background2.png");
+
+	Entity* bck = new Entity(input);
+	bck->AddModule(bck_T2);
+	bck->Scale = vec2(LEVEL_WIDTH, LEVEL_HEIGHT);
+	bck->Position = vec2(0, 0);
+	
+	background.push_back(bck);
+
+	//Add detail to background
+	srand(static_cast<int>(time(NULL)));
+	int rnd1 = clamp(rand() % 500, 250, 500);
+
+	for (int i = 0; i < rnd1; i++)
+	{
+		int x = rand() % 10000;
+		int y = rand() % 10000;
+		int size = rand() % 500;
+
+		Entity* bck2 = new Entity(input);
+		bck2->AddModule(bck_T1);
+		bck2->Scale = vec2(size, size);
+		bck2->Position = vec2(x - 5000, y - 5000);
+
+		background.push_back(bck2);
+	}
+
+	//Main Menu Objects
+	Entity* ship = new Entity(input);
+	Texture* ship_texture = new Texture("Images/Ship1.png");
+	ship->AddModule(ship_texture);
+	ship->Scale = vec2(100, 100);
+	ship->Position = vec2(400, 800);
+	ship->Mass = 50;
+	ship->Rotation = -45;
+	ship->IsStatic = true;
+	entities.push_back(ship);
+
+	Entity* title = new Entity(input);
+	Texture* title_texture = new Texture("Images/title.png");
+	title->AddModule(title_texture);
+	title->Scale = vec2(512, 100);
+	title->Position = vec2(800, 200);
+	title->IsStatic = true;
+	entities.push_back(title);
+
+	Texture* start_normal = new Texture("Images/Button/End_Normal.png");
+	Texture* start_hover = new Texture("Images/Button/End_Hover.png");
+
+	Button* start_button = new Button(input, start_normal, start_hover);
+	start_button->Scale = vec2(300, 100);
+	start_button->Position = vec2(800, 700);
+	buttons.push_back(start_button);
 }
 
 void SetupLevel()
@@ -136,8 +276,8 @@ void SetupLevel()
 	tallBox->bounceRatio = 0.5;
 
 	BoxCollider* wideBox = new BoxCollider();
-	tallBox->size = vec2(10000, 100);
-	tallBox->bounceRatio = 0.5;
+	wideBox->size = vec2(10000, 100);
+	wideBox->bounceRatio = 0.5;
 
 	Entity* borderLeft = new Entity(input);
 	borderLeft->IsStatic = true;
@@ -278,58 +418,104 @@ void Render()
 	{
 		e->Render();
 	}
+	for (Button* b : buttons)
+	{
+		b->Render();
+	}
 
 	glutSwapBuffers();
 }
 	
 void Update(int i)
 {
-	//Make health bars apear on top of the players
-	entities[2]->Scale = vec2(static_cast<Player1*>(entities[0])->Health, 10);
-	entities[2]-> Position = entities[0]->Position + vec2(0, -100);
-
-	entities[3]->Scale = vec2(static_cast<Player1*>(entities[1])->Health, 10);
-	entities[3]-> Position = entities[1]->Position + vec2(0, -100);
-
-	//If Q or P is pressed shoot
-	if (input->GetKey(KEYS::Q))
+	if (CURRENT_LEVEL == 1)
 	{
-		CircleCollider* c = new CircleCollider();
-		Texture* t = new Texture("Images/Rocket.png");
+		//Make health bars apear on top of the players
+		entities[2]->Scale = vec2(static_cast<Player1*>(entities[0])->Health, 10);
+		entities[2]-> Position = entities[0]->Position + vec2(0, -100);
 
-		Bullet* bullet = new Bullet(input);
-		bullet->AddModule(t);
-		bullet->AddModule(c);
-		bullet->Position = entities[0]->Position + vec2(sin(entities[0]->Rotation * 3.14 / 180) * 150, -cos(entities[0]->Rotation* 3.14 / 180) * 150);
-		bullet->Scale = vec2(20, 76);
-		bullet->Rotation = entities[0]->Rotation;
-		bullet->AddForce(vec2(sin(entities[0]->Rotation * 3.14 / 180) * 5, -cos(entities[0]->Rotation* 3.14 / 180) * 5));
-		bullet->Mass = 10;
-		entities.push_back(bullet);
+		entities[3]->Scale = vec2(static_cast<Player1*>(entities[1])->Health, 10);
+		entities[3]-> Position = entities[1]->Position + vec2(0, -100);
+		
+		//If Q or P is pressed shoot
+		if (input->GetKey(KEYS::Q))
+		{
+			CircleCollider* c = new CircleCollider();
+			c->Radius = 50;
+			Texture* t = new Texture("Images/Rocket.png");
+			Bullet* bullet = new Bullet(input);
+			bullet->AddModule(t);
+			bullet->AddModule(c);
+			bullet->Position = entities[0]->Position + vec2(sin(entities[0]->Rotation * 3.14 / 180) * 150, -cos(entities[0]->Rotation* 3.14 / 180) * 150);
+			bullet->Scale = vec2(20, 76);
+			bullet->Rotation = entities[0]->Rotation;
+			bullet->AddForce(vec2(sin(entities[0]->Rotation * 3.14 / 180) * 5, -cos(entities[0]->Rotation* 3.14 / 180) * 5));
+			bullet->Mass = 10;
+			entities.push_back(bullet);
+		}
+
+		//If Q or P is pressed shoot
+		if (input->GetKey(KEYS::N))
+		{
+			CircleCollider* c = new CircleCollider();
+			c->Radius = 50;
+			Texture* t = new Texture("Images/Rocket.png");
+			Bullet* bullet = new Bullet(input);
+			bullet->AddModule(t);
+			bullet->AddModule(c);
+			bullet->Position = entities[1]->Position + vec2(sin(entities[1]->Rotation * 3.14 / 180) * 200, -cos(entities[1]->Rotation* 3.14 / 180) * 200);
+			bullet->Scale = vec2(20, 76);
+			bullet->Rotation = entities[1]->Rotation;
+			bullet->AddForce(vec2(sin(entities[1]->Rotation * 3.14 / 180) * 5, -cos(entities[1]->Rotation* 3.14 / 180) * 5));
+			bullet->Mass = 10;
+			entities.push_back(bullet);
+		}
+
+		Player1* p1 = dynamic_cast<Player1*>(entities[0]);
+		Player2* p2 = dynamic_cast<Player2*>(entities[1]);
+		if (p1 != NULL && p2 != NULL)
+		{
+			if (p1->Health <= 0)
+			{
+				cout << "Player 2 wins" << endl;
+				ChangeScene(2);
+			}
+			else if (p2->Health <= 0)
+			{
+				cout << "Player 1 wins" << endl;
+				ChangeScene(2);
+			}
+		}
 	}
-
-	//If Q or P is pressed shoot
-	if (input->GetKey(KEYS::N))
+	else if (CURRENT_LEVEL == 0 || CURRENT_LEVEL == 2)
 	{
-		CircleCollider* c = new CircleCollider();
-		Texture* t = new Texture("Images/Rocket.png");
-
-		Bullet* bullet = new Bullet(input);
-		bullet->AddModule(t);
-		bullet->AddModule(c);
-		bullet->Position = entities[1]->Position + vec2(sin(entities[1]->Rotation * 3.14 / 180) * 150, -cos(entities[1]->Rotation* 3.14 / 180) * 150);
-		bullet->Scale = vec2(20, 76);
-		bullet->Rotation = entities[1]->Rotation;
-		bullet->AddForce(vec2(sin(entities[1]->Rotation * 3.14 / 180) * 5, -cos(entities[1]->Rotation* 3.14 / 180) * 5));
-		bullet->Mass = 10;
-		entities.push_back(bullet);
+		if (buttons[0]->IsPressed)
+		{
+			ChangeScene(1);
+		}
 	}
 
 	CalculateCollision();
 
-	for (Entity* e : entities)
+	for (vector<Entity*>::iterator e = entities.begin(); e!= entities.end();++e)
 	{
-		e->FixedUpdate();
+		(*e)->FixedUpdate();
+		if (CURRENT_LEVEL == 1)
+		{
+			Bullet* b = dynamic_cast<Bullet*>(*e);
+			if (b != NULL)
+			{
+				CircleCollider* c = (*e)->GetModule<CircleCollider>();
+				if (c != NULL)
+				{
+					if (c->IsColliding() || b->bulletTimer <= 0)
+					{
+						entities.erase(e);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	// Reset timer
@@ -341,11 +527,36 @@ void Update(int i)
 void KeyboardUp(unsigned char k, int x, int y)
 {
 	input->SetKey((KEYS)((int)toupper(k)), false);
+	input->mousePosition = vec2(x, y);
 }
 
 void KeyboardDown(unsigned char k, int x, int y)
 {
 	input->SetKey((KEYS)((int)toupper(k)), true);
+	input->mousePosition = vec2(x, y);
+}
+
+void SpecialKeyDown(int c, int x, int y)
+{
+	input->SetKey((KEYS)c, true);
+	input->mousePosition = vec2(x, y);
+}
+
+void SpecialKeyUp(int c, int x, int y)
+{
+	input->SetKey((KEYS)c, false);
+	input->mousePosition = vec2(x, y);
+}
+
+void Mouse(int b, int s, int x, int y)
+{
+	input->SetKey((KEYS)(b + 200), !s);
+	input->mousePosition = vec2(x, y);
+}
+
+void MousePosition(int x, int y)
+{
+	input->mousePosition = vec2(x, y);
 }
 
 #pragma region
@@ -470,6 +681,21 @@ void CalculateCollision()
 								c1->colliding = CircleCollision(cCol, cCol2, pCol2, bCol2, point);
 								if (c1->colliding)
 								{
+									//Touching bullet
+									Player1* p1 = dynamic_cast<Player1*>(e);
+									Player2* p2 = dynamic_cast<Player2*>(e);
+									Bullet* b = dynamic_cast<Bullet*>(entity);
+									if (b != NULL)
+									{
+										if (p1 != NULL)
+										{
+											p1->Health -= b->power;
+										}
+										else if (p2 != NULL)
+										{
+											p1->Health -= b->power;
+										}
+									}
 									if (!entity->IsStatic)
 									{
 										float xRatio = (e->Velocity.x + entity->Velocity.x) / (e->Mass + entity->Mass);

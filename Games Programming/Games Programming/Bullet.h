@@ -7,6 +7,7 @@ class Bullet: public Entity
 {
 public:
 	int power;
+	float bulletTimer;
 
 	void Update();
 

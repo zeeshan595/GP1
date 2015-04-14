@@ -31,7 +31,7 @@ public:
 	float Mass;
 
 	//Methods
-	void Render();
+	virtual void Render();
 	void FixedUpdate();
 	void AddModule(Module* m);
 	void AddChild(Entity* e);

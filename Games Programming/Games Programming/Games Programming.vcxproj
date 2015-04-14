@@ -64,6 +64,7 @@
   <ItemGroup>
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="Player2.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="AudioClip.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Common.h" />

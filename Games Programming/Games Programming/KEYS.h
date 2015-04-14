@@ -38,7 +38,10 @@ enum KEYS
 	ArrowUp = 56,
 	ArrowDown = 50,
 	ArrowRight = 54,
-	ArrowLeft = 52
+	ArrowLeft = 52,
+	MouseLeft = 200,
+	MouseMiddle = 201,
+	MouseRight = 202
 };
 
 #endif

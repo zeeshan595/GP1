@@ -3,6 +3,7 @@
 
 Input::Input()
 {
+	mousePosition = vec2(0, 0);
 }
 
 
