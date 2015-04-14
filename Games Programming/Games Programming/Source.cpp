@@ -18,6 +18,7 @@ Input* input;
 float cameraSize = 1;
 int WINDOW_WIDTH = 1600;
 int WINDOW_HEIGHT = 1200;
+int CURRENT_LEVEL = 0;
 
 //Open GL Methods
 void Reshape(int w, int h);
@@ -28,6 +29,7 @@ void KeyboardDown(unsigned char k, int x, int y);
 void SetupPlayers();
 void SetupLevel();
 void CalculateCollision();
+void ChangeScene(int id);
 
 int main(int argc, char **argv)
 {
@@ -44,8 +46,12 @@ int main(int argc, char **argv)
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutCreateWindow("2D Fight");
 
+	//Player Background Music
+	AudioClip* c = new AudioClip("Audio/Music.wav", "Music");
+	//c->Play();
+
 	//Create Game
-	SetupLevel();
+	ChangeScene(0);
 
 	//Setup OpenGL Methods
 	glutReshapeFunc(Reshape);
@@ -68,12 +74,28 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+void ChangeScene(int id)
+{
+	background.clear();
+	entities.clear();
+	switch(id)
+	{
+	case 0:
+
+		break;
+	case 1:
+		SetupLevel();
+		break;
+	case 2:
+
+		break;
+	}
+	CURRENT_LEVEL = id;
+}
+
 void SetupLevel()
 {
 	SetupPlayers();
-	//Player Background Music
-	AudioClip* c = new AudioClip("Audio/Music.wav", "Music");
-	//c->Play();
 
 	//Generate Level
 	int LEVEL_WIDTH = 10000;
@@ -230,18 +252,21 @@ void Render()
     glLoadIdentity();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	//Change camera position to  be in the center of the 2 players
-	vec2 CamereaPosition = (entities[0]->Position + entities[1]->Position);
-	CamereaPosition = CamereaPosition * 0.5f;
-	glTranslatef(static_cast<GLfloat>(WINDOW_WIDTH / 2),static_cast<GLfloat>(WINDOW_HEIGHT / 2), 0);
+	if (CURRENT_LEVEL == 1)
+	{
+		//Change camera position to  be in the center of the 2 players
+		vec2 CamereaPosition = (entities[0]->Position + entities[1]->Position);
+		CamereaPosition = CamereaPosition * 0.5f;
+		glTranslatef(static_cast<GLfloat>(WINDOW_WIDTH / 2),static_cast<GLfloat>(WINDOW_HEIGHT / 2), 0);
 
-	//Scale depending on how far the 2 space ships are
-	cameraSize = glm::distance(entities[0]->Position, entities[1]->Position);
-	cameraSize = 1 / (cameraSize / 1000);
-	cameraSize = glm::clamp(cameraSize, 0.5f, 5.0f);
-	glScalef(cameraSize, cameraSize, 0);
-	//Change the position so we can scale from the center of the screen
-	glTranslatef(-CamereaPosition.x, -CamereaPosition.y, 0);
+		//Scale depending on how far the 2 space ships are
+		cameraSize = glm::distance(entities[0]->Position, entities[1]->Position);
+		cameraSize = 1 / (cameraSize / 1000);
+		cameraSize = glm::clamp(cameraSize, 0.5f, 5.0f);
+		glScalef(cameraSize, cameraSize, 0);
+		//Change the position so we can scale from the center of the screen
+		glTranslatef(-CamereaPosition.x, -CamereaPosition.y, 0);
+	}
 
 	//Make sure we render background first
 	//for (list<Entity>::iterator iter=entities.begin();iter!=entities.end();++iter)
