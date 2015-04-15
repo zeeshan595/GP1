@@ -1,3 +1,8 @@
+///--By Zeeshan--
+///Referance:
+///		http://stackoverflow.com/
+///		http://youtube.com/
+///		Special thanks to bobby, brian & Jim for providing a few fixes
 #include "Common.h"
 #include "Input.h"
 #include "Texture.h"
