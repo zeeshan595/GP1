@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include "Collider.h"
 
+//Pixel Collider uses texture to calculate if a pixel is transparent or not. If not it can collide with others
 class PixelCollider : public Collider
 {
 public:

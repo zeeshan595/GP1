@@ -6,6 +6,7 @@
 #include "BoxCollider.h"
 #include "Collider.h"
 
+//Creates a circle collider
 class CircleCollider: public Collider
 {
 public:

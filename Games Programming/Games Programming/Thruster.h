@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Input.h"
 
+//Thrusters that will be childeren of players
 class Thruster : public Entity
 {
 private:

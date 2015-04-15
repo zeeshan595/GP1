@@ -9,7 +9,6 @@
 #include "Player2.h"
 #include "Bullet.h"
 #include "Thruster.h"
-#include "AudioClip.h"
 #include "Button.h"
 
 //Public Varibles
@@ -55,8 +54,8 @@ int main(int argc, char **argv)
 	glutCreateWindow("2D Fight");
 
 	//Player Background Music
-	AudioClip* c = new AudioClip("Audio/Music.wav", "Music");
-	c->Play();
+	mciSendString("open Audio/music.mp3 type mpegvideo alias music", NULL, 0, 0);
+	mciSendString("play music repeat", NULL, 0, 0);
 
 	//Create Game
 	ChangeScene(0);
@@ -86,12 +85,15 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+//Load a different scene
 void ChangeScene(int id)
 {
+	//Clear list
 	background.clear();
 	entities.clear();
 	buttons.clear();
 
+	//Load Level
 	switch(id)
 	{
 	case 0:
@@ -104,6 +106,7 @@ void ChangeScene(int id)
 		SetupEndScene();
 		break;
 	}
+	//Set varible to what leve is loaded
 	CURRENT_LEVEL = id;
 }
 
@@ -117,11 +120,11 @@ void SetupMenu()
 	Texture* bck_T1 = new Texture("Images/Background1.png");
 	Texture* bck_T2 = new Texture("Images/Background2.png");
 
+	//Create a background
 	Entity* bck = new Entity(input);
 	bck->AddModule(bck_T2);
 	bck->Scale = vec2(LEVEL_WIDTH, LEVEL_HEIGHT);
 	bck->Position = vec2(0, 0);
-	
 	background.push_back(bck);
 
 	//Add detail to background
@@ -153,6 +156,7 @@ void SetupMenu()
 	ship->IsStatic = true;
 	entities.push_back(ship);
 
+	//create a title at the top
 	Entity* title = new Entity(input);
 	Texture* title_texture = new Texture("Images/title.png");
 	title->AddModule(title_texture);
@@ -161,6 +165,7 @@ void SetupMenu()
 	title->IsStatic = true;
 	entities.push_back(title);
 
+	//create a play button
 	Texture* start_normal = new Texture("Images/Button/Start_Normal.png");
 	Texture* start_hover = new Texture("Images/Button/Start_Hover.png");
 
@@ -216,6 +221,7 @@ void SetupEndScene()
 	ship->IsStatic = true;
 	entities.push_back(ship);
 
+	//Create a title screen
 	Entity* title = new Entity(input);
 	Texture* title_texture = new Texture("Images/title.png");
 	title->AddModule(title_texture);
@@ -224,6 +230,7 @@ void SetupEndScene()
 	title->IsStatic = true;
 	entities.push_back(title);
 
+	//Create a end button
 	Texture* start_normal = new Texture("Images/Button/End_Normal.png");
 	Texture* start_hover = new Texture("Images/Button/End_Hover.png");
 
@@ -233,6 +240,7 @@ void SetupEndScene()
 	buttons.push_back(start_button);
 }
 
+//Setup the main level
 void SetupLevel()
 {
 	SetupPlayers();
@@ -306,8 +314,6 @@ void SetupLevel()
 	borderLeft->Scale = vec2(10000, 100);
 	borderLeft->Position = vec2(0, 5050);
 	entities.push_back(borderLeft);
-
-	//Add objects
 }
 
 void SetupPlayers()
@@ -371,6 +377,7 @@ void SetupPlayers()
 	p2->AddChild(p2_T);
 }
 
+//When ever the screen is resized change the camera to fit it
 void Reshape(int w, int h)
 {
 	WINDOW_WIDTH = w;
@@ -386,6 +393,7 @@ void Reshape(int w, int h)
 	glLoadIdentity();
 }
 
+//Render handles rendering the entire scene
 void Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -425,7 +433,8 @@ void Render()
 
 	glutSwapBuffers();
 }
-	
+
+//Repeat every 10 mili seconds
 void Update(int i)
 {
 	if (CURRENT_LEVEL == 1)
@@ -440,6 +449,7 @@ void Update(int i)
 		//If Q or P is pressed shoot
 		if (input->GetKey(KEYS::Q))
 		{
+			//Create bullet with collider and texture
 			CircleCollider* c = new CircleCollider();
 			c->Radius = 50;
 			Texture* t = new Texture("Images/Rocket.png");
@@ -452,11 +462,18 @@ void Update(int i)
 			bullet->AddForce(vec2(sin(entities[0]->Rotation * 3.14 / 180) * 5, -cos(entities[0]->Rotation* 3.14 / 180) * 5));
 			bullet->Mass = 10;
 			entities.push_back(bullet);
+
+			//Stop playing fire sound and play a new fire sound
+			mciSendString("stop fire", NULL, 0, 0);
+			mciSendString("close fire", NULL, 0, 0);
+			mciSendString("open Audio/shot.mp3 type mpegvideo alias fire", NULL, 0, 0);
+			mciSendString("play fire", NULL, 0, 0);
 		}
 
 		//If Q or P is pressed shoot
 		if (input->GetKey(KEYS::N))
 		{
+			//Create bullet with collider and texture
 			CircleCollider* c = new CircleCollider();
 			c->Radius = 50;
 			Texture* t = new Texture("Images/Rocket.png");
@@ -469,6 +486,12 @@ void Update(int i)
 			bullet->AddForce(vec2(sin(entities[1]->Rotation * 3.14 / 180) * 5, -cos(entities[1]->Rotation* 3.14 / 180) * 5));
 			bullet->Mass = 10;
 			entities.push_back(bullet);
+			
+			//Stop playing fire sound and play a new fire sound
+			mciSendString("stop fire", NULL, 0, 0);
+			mciSendString("close fire", NULL, 0, 0);
+			mciSendString("open Audio/shot.mp3 type mpegvideo alias fire", NULL, 0, 0);
+			mciSendString("play fire", NULL, 0, 0);
 		}
 
 		Player1* p1 = dynamic_cast<Player1*>(entities[0]);

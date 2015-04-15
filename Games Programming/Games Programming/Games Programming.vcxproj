@@ -76,7 +76,6 @@
     <ClCompile Include="Thruster.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioClip.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />

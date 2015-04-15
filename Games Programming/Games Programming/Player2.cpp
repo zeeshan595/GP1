@@ -16,6 +16,7 @@ Player2::~Player2()
 
 void Player2::Update()
 {
+	//If pressed w move in the direction player is facing
 	if (Entity::input->GetKey(KEYS::I))
 	{
 		Entity::AddForce(vec2(sin(Rotation * 3.14 / 180) * Speed, -cos(Rotation* 3.14 / 180) * Speed));
@@ -31,6 +32,7 @@ void Player2::Update()
 		child[0]->Enabled = false;
 	}
 
+	//Rotate player with A & D
 	if (input->GetKey(KEYS::J))
 	{
 		Entity::Rotation += -RotationSpeed;

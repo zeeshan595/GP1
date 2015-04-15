@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "CircleCollider.h"
 
+//Creates a bullet
 class Bullet: public Entity
 {
 public:

@@ -1,5 +1,6 @@
 #ifndef KEYS_H
 #define KEYS_H
+//Contains all keys that can be used in the project
 
 enum KEYS 
 {

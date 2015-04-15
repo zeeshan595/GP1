@@ -6,11 +6,15 @@
 #include "Texture.h"
 #include "CircleCollider.h"
 
+//Creates a player from Entity
 class Player1: public Entity
 {
 public:
+	//Used to trake players health
 	int Health;
+	//How fast does the palyer go
 	float Speed;
+	//How fast does the player rotate
 	float RotationSpeed;
 
 	void Update();

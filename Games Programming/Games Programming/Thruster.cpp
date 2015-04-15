@@ -14,7 +14,7 @@ Thruster::~Thruster(void)
 
 void Thruster::Update()
 {
+	//Make the thruster move slightly 
 	Position = vec2(sin(movment) * 1.5, cos(movment * 0.5) * 1.5);
-
 	movment += 0.1;
 }

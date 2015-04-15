@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-
+//Intiialize entity and setup all the varibles so nothing is set to NULL
 Entity::Entity(Input* input)
 {
 	Entity::input = input;
@@ -27,6 +27,8 @@ Entity::~Entity()
 
 }
 
+//Render the entity and run update for any module that is attached
+//Also render any child after rendering object
 void Entity::Render()
 {
 	if (Enabled)
@@ -80,6 +82,7 @@ void Entity::Render()
 
 void Entity::Update(){ }
 
+//Use physics to change position and torque for entity and childs
 void Entity::FixedUpdate()
 {
 	if (Enabled)
@@ -102,6 +105,7 @@ void Entity::FixedUpdate()
 	}
 }
 
+//Adds force to velocity
 void Entity::AddForce(vec2 f)
 {
 	Velocity += f / Mass;

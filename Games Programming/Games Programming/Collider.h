@@ -1,6 +1,8 @@
 #pragma once
 #include "Entity.h"
 
+//Creates a tempalte for other colliders
+//e.g: Box Collider, Circle Collider 
 class Collider: public Module
 {
 public:
